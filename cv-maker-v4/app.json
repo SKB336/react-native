@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     },
     "splash": {
       "image": "./assets/images/splash.png",

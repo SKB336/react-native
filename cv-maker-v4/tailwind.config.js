@@ -1,69 +1,41 @@
-const { hairlineWidth } = require('nativewind/theme');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  // NOTE: Update this to include the paths to all of your component files.
   content: [
-    './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './node_modules/@rnr/**/*.{ts,tsx}',
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
   ],
-  presets: [require('nativewind/preset')],
+  presets: [require("nativewind/preset")],
   theme: {
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
+        primary: "#161622",
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: "#FF9C01",
+          100: "#FF9001",
+          200: "#FF8E01",
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+        black: {
+          DEFAULT: "#000",
+          100: "#1E1E2D",
+          200: "#232533",
         },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+        gray: {
+          100: "#CDCDE0",
         },
       },
-      borderWidth: {
-        hairline: hairlineWidth(),
-      },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
-      },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-      },
+      // fontFamily: {
+      //   pthin: ["Poppins-Thin", "sans-serif"],
+      //   pextralight: ["Poppins-ExtraLight", "sans-serif"],
+      //   plight: ["Poppins-Light", "sans-serif"],
+      //   pregular: ["Poppins-Regular", "sans-serif"],
+      //   pmedium: ["Poppins-Medium", "sans-serif"],
+      //   psemibold: ["Poppins-SemiBold", "sans-serif"],
+      //   pbold: ["Poppins-Bold", "sans-serif"],
+      //   pextrabold: ["Poppins-ExtraBold", "sans-serif"],
+      //   pblack: ["Poppins-Black", "sans-serif"],
+      // },
     },
   },
-  plugins: [require('tailwindcss-animate')],
-};
+  plugins: [],
+}
