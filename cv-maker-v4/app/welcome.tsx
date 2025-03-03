@@ -37,8 +37,8 @@ const WelcomeScreen = () => {
                 </View>
                 <BaseButton title="Create your Resume" 
                             handlePress={() => {}} 
-                            containerStyles='bg-primary w-[70%]' 
-                            textStyles='text-white' />
+                            containerStyles='bg-secondary w-[70%]' 
+                            textStyles='text-primary' />
             </View>
         </View>
     );
