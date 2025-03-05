@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, Image } from 'react-native';
 import { Svg, Circle } from 'react-native-svg';
 import BaseButton from '../components/BaseButton';
 
+import { images } from '../constants';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get("window");
 
@@ -10,7 +12,6 @@ const { width } = Dimensions.get("window");
 const circleDiameter = 1.5 * width;
 const circleRadius = circleDiameter / 2;
 
-console.log(circleDiameter, -circleDiameter / 6);
 
 const WelcomeScreen = () => {
     return (
@@ -30,13 +31,22 @@ const WelcomeScreen = () => {
             </Svg>
             
             {/* Absolutely positioned card for true center */}
-            <View className="absolute inset-0 flex-1 justify-center items-center">
-                <View className="w-72 bg-white rounded-2xl shadow-lg p-4 justify-center items-center">
-                    <Text className="text-lg font-semibold text-gray-700">Welcome to the App</Text>
-                    <Text className="text-gray-500">This is a centered card.</Text>
+            <View className="absolute inset-0 flex-1 justify-center items-center gap-16">
+                <View className="w-60 bg-white rounded-2xl shadow-lg p-4 justify-center items-center">
+                    <Image 
+                        source={images.cvSample} 
+                        className="w-full h-60 mb-3"
+                        resizeMode="cover"
+                    />
+                    <Text className="text-lg font-semibold text-center text-gray-700">Create the perfect resume</Text>
+                    <Text className="text-gray-500">in just few steps</Text>
+                </View>
+                <View>
+                    <Text className="text-center font-semibold text-2xl text-black-500">Welcome to ---</Text>
+                    <Text className="text-center text-gray-500">terms and conditions</Text>
                 </View>
                 <BaseButton title="Create your Resume" 
-                            handlePress={() => {}} 
+                            handlePress={() => {router.replace("/home")}} 
                             containerStyles='bg-secondary w-[70%]' 
                             textStyles='text-primary' />
             </View>
