@@ -1,53 +1,90 @@
 import React from 'react';
-import { View, Text, TextInput, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { Home, Search, Book, User } from 'lucide-react-native';
-import BaseButton from '../components/BaseButton';
+import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons'; // Assuming you are using MaterialIcons
 
-const HomeScreen = () => {
+const { width, height } = Dimensions.get('window');
+
+export default function LandingPage() {
   return (
-    <View className='flex-1 bg-white px-4 pt-6'>
-      <View className='absolute top-0 left-0 right-0 h-40 bg-[#1A5555] rounded-b-full' />
-      {/* Search Bar */}
-      <View className='flex-row items-center bg-white rounded-xl p-3 mb-4'>
-        <Search size={20} color='#666' />
-        <TextInput
-          className='ml-2 flex-1 text-gray-700'
-          placeholder='Search for subjects...'
-          placeholderTextColor='#aaa'
-        />
-      </View>
-      
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Greeting */}
-        <Text className='text-xl font-semibold text-gray-900'>Explore the cool features we have for you!</Text>
-        
-        {/* Subjects Section */}
-        <Text className='text-lg font-bold text-gray-900 mt-4'>Subjects</Text>
-        <View className='flex-row mt-2 space-x-4'>
-          <TouchableOpacity className='bg-orange-400 rounded-xl p-4 flex-1'>
-            <Text className='text-white font-semibold'>Mathematics</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className='bg-blue-500 rounded-xl p-4 flex-1'>
-            <Text className='text-white font-semibold'>Geography</Text>
-          </TouchableOpacity>
-        </View>
-        
-        {/* Schedule Section */}
-        <Text className='text-lg font-bold text-gray-900 mt-6'>Your Schedule</Text>
-        <View className='bg-green-500 rounded-xl p-4 mt-2'>
-          <Text className='text-white font-semibold'>Biology</Text>
-          <Text className='text-white text-sm'>Chapter 3: Animal Kingdom</Text>
-        </View>
-      </ScrollView>
-      
-      {/* Bottom Navigation */}
-      <View className='flex-row justify-around bg-white py-3 rounded-t-xl mt-4'>
-        <Home size={24} color='#34D399' />
-        <Book size={24} color='#666' />
-        <User size={24} color='#666' />
-      </View>
-    </View>
-  );
-};
+    <SafeAreaView className="flex-1 flex-col justify-between bg-white">
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-export default HomeScreen;
+      {/* Title */}
+      <Text className='text-2xl font-bold text-center mt-5'>Resume Builder</Text>
+
+      {/* Bottom Buttons */}
+        <View className='flex-row justify-around mt-5 pb-5'>
+          <TouchableOpacity className='p-2.5'>
+            <MaterialIcons name="menu" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity className='bg-gray-200 rounded-full p-3.75 h-12 w-12 items-center justify-center'>
+            <MaterialIcons name="add" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity className='p-2.5'>
+            <MaterialIcons name="file-download" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  cvBannerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cvIconContainer: {
+    backgroundColor: '#B39DDB', // Darker purple for CV icon
+    borderRadius: 4,
+    padding: 8,
+    marginRight: 10,
+  },
+  cvIcon: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  cvTextContainer: {
+    flex: 1,
+  },
+  cvTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cvSubtitle: {
+    fontSize: 14,
+    color: 'gray',
+  },
+  openButton: {
+    backgroundColor: '#3F51B5', // Blue button color
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 4,
+  },
+  openButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    padding: 8,
+  },
+  mainImage: {
+    width: width * 0.8, // Adjust as needed
+    height: height * 0.4, // Adjust as needed
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  bottomButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    paddingBottom: 20,
+  },
+  bottomButton: {
+    padding: 10,
+  },
+  addButton: {
+    backgroundColor: '#E0E0E0', // Light gray background for add button
+    borderRadius: 50,
+    padding: 15,
+  },
+});
