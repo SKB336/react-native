@@ -46,7 +46,7 @@ const WelcomeScreen = () => {
                     <Text className="text-center text-gray-500">terms and conditions</Text>
                 </View>
                 <BaseButton title="Create your Resume" 
-                            handlePress={() => {router.replace("/home")}} 
+                            handlePress={() => {router.replace("/(tabs)/home")}} 
                             containerStyles='bg-secondary w-[70%]' 
                             textStyles='text-primary' />
             </View>
