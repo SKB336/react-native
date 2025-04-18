@@ -6,14 +6,12 @@ import Tabs from './(tabs)/_layout'
 
 const RootLayout = () => {
   return (
-    // <Stack>
-    //   <Stack.Screen name='welcome' options={{ headerShown: false }} />
-    //   {/* <Stack.Screen name='home' options={{ headerShown: false }} /> */}
-    //   <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-    // </Stack>
-    <NavigationContainer>
-      <Tabs />
-    </NavigationContainer>
+    <Stack>
+      <Stack.Screen name='welcome' options={{ headerShown: false }} />
+      {/* <Stack.Screen name='home' options={{ headerShown: false }} /> */}
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+    </Stack>
+      // <Tabs />
   )
 }
 

@@ -1,14 +1,15 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './home';
+import { View, Text } from 'react-native'
+import React from 'react'
+import { Tabs } from 'expo-router'
 
-const Tab = createBottomTabNavigator();
-
-const Tabs = () => {
+const TabsLayout = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-    </Tab.Navigator>
-  );
-};
+    <Tabs>
+      <Tabs.Screen name="home" options={{ title: 'Home' }} />
+      <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+      <Tabs.Screen name="settings" options={{ title: 'Settings' }} />
+    </Tabs>
+  )
+}
 
-export default Tabs;
+export default TabsLayout
