@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, Image, Pressable, PressableProps } from 'react-native'
 import React from 'react'
-import { Tabs } from 'expo-router'
+import { Link, Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
+import COLORS from '../../constants/colors'
+import { FontAwesome } from '@expo/vector-icons';
 
 const TabIcon = ({icon, color, name, focused}: any) => {
   return (
@@ -26,7 +28,7 @@ const MainTabIcon = ({icon, color, name, focused}: any) => {
       <Image
         source={icon}
         resizeMode='contain'
-        tintColor={color}
+        tintColor={focused ? '#ffffff' : '#ffffff'}
         className='w-8 h-8'
       />
     </View>
@@ -35,11 +37,11 @@ const MainTabIcon = ({icon, color, name, focused}: any) => {
 
 const CustomTabBarButton = ({ children, onPress }: PressableProps & { children: React.ReactNode }) => {
   return <Pressable
-    className='top-[-30] justify-center items-center'
+    className='top-[-35] justify-center items-center'
     onPress={onPress}
   >
     <View
-      className='w-[70] h-[70] rounded-[35] bg-secondary'
+      className='w-[65] h-[65] rounded-[35] bg-primary'
     >
       {children}
     </View>
@@ -48,6 +50,7 @@ const CustomTabBarButton = ({ children, onPress }: PressableProps & { children: 
 
 const TabsLayout = () => {
   return (
+    <>
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
@@ -60,12 +63,13 @@ const TabsLayout = () => {
           backgroundColor: '#ffffff',
           borderTopColor: 'transparent',
           borderRadius: 15,
-          height: 90,
+          height: 75,
           ...styles.shadow
         }
       }}
     >
       <Tabs.Screen 
+        
         name="home" 
         options={{ 
           title: 'Home', 
@@ -84,6 +88,14 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="create"
         options={{
+          title: "Profile",
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTintColor: "#FFFFFF",
+          tabBarStyle: {
+            display: 'none'
+          },
           tabBarIcon: ({ color, focused }) => (
             <MainTabIcon
               icon={icons.plus}
@@ -94,7 +106,24 @@ const TabsLayout = () => {
           ), 
           tabBarButton: (props) => { 
             return <CustomTabBarButton {...props} />
-          }
+          },
+          headerLeft: ({  }) => (
+            <Pressable 
+              onPress={() => {
+                router.push({pathname: '/(tabs)/home', params: {}})
+                // <Link href="/(tabs)/home" push/>
+              }} 
+              className="pl-6 w-[50]">
+              <Image
+                source={icons.back} // Your custom icon here
+                className="w-5 h-5 tint-white"
+                tintColor="#FFFFFF"
+              />
+              {/* <FontAwesome name="arrow-left" size={16} /> */}
+            </Pressable>
+          ),
+          headerShown: true
+
         }}
       />
 
@@ -114,6 +143,7 @@ const TabsLayout = () => {
         }} 
       />
     </Tabs>
+    </>
   )
 }
 

@@ -6,6 +6,7 @@ const RootLayout = () => {
     <Stack>
       <Stack.Screen name='welcome' options={{ headerShown: false }} />
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+      <Stack.Screen name='(forms)' options={{ headerShown: false }} />
     </Stack>
   )
 }

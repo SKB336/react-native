@@ -14,13 +14,13 @@ const BaseButton: React.FC<BaseButtonProps> = ({ title, handlePress, containerSt
   return (
     <Pressable 
         onPress={handlePress}
-        className={`bg-secondary rounded-xl min-h-[54px] justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''} active:opacity-70`}
+        className={`bg-primary rounded-xl min-h-[54px] justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''} active:opacity-70`}
         // ? Used active: for nativewind instead of {pressed}
         // style={({pressed}) => [{ opacity: pressed ? 0.7 : isLoading ? 0.5 : 1 }]}
         disabled={isLoading}
         {...pressableProps}
     >
-        <Text className={`text-primary font-psemibold text-base ${textStyles}`}>
+        <Text className={`text-white font-medium text-base font-psemibold ${textStyles}`}>
             {title}
         </Text>
     </Pressable>
