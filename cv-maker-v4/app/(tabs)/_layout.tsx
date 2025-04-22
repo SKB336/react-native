@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet, Image, Pressable, PressableProps } from 'react-native'
 import React from 'react'
-import { Link, Tabs, router } from 'expo-router'
+import { Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
 import COLORS from '../../constants/colors'
-import { FontAwesome } from '@expo/vector-icons';
 
 const TabIcon = ({icon, color, name, focused}: any) => {
   return (

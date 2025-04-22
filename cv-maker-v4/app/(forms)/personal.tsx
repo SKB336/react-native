@@ -1,4 +1,3 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomForm from '../../components/FormComponent';
 
 const MyScreen = () => {
@@ -7,8 +6,8 @@ const MyScreen = () => {
     // Process the form data
   };
 
-// Define the type for field options (for select/dropdown fields)
-interface FieldOption {
+  // Define the type for field options (for select/dropdown fields)
+  interface FieldOption {
     label: string;
     value: string;
   }
@@ -47,14 +46,12 @@ interface FieldOption {
   ];
 
   return (
-    // <SafeAreaView className="flex-1 bg-white">
       <CustomForm
         title="Personal Information"
         fields={formFields}
         onSubmit={handleSubmit}
-        submitLabel="Send Message"
+        submitLabel="Save"
       />
-    // </SafeAreaView>
   );
 };
 

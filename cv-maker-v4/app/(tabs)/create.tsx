@@ -10,7 +10,7 @@ const cardData: {
   path: string;
 }[] = [
   { name: 'Personal',   icon: "user",             path: "/(forms)/personal" },
-  { name: 'Education',  icon: "graduation-cap",   path: "/(tabs)/home" },
+  { name: 'Education',  icon: "graduation-cap",   path: "/(forms)/education" },
   { name: 'Experience', icon: "briefcase",        path: "/(tabs)/home" },
   { name: 'Skills',     icon: "star",             path: "/(tabs)/home" },
   { name: 'Objective',  icon: "bullseye",         path: "/(tabs)/home" },
