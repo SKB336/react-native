@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import BaseButton from './BaseButton';
+import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Type definitions
@@ -20,7 +20,7 @@ interface FormField {
   options?: FieldOption[];
 }
 
-interface CustomFormProps {
+interface FormComponentProps {
   title?: string;
   fields: FormField[];
   onSubmit: (values: Record<string, any>) => void;
@@ -30,9 +30,9 @@ interface CustomFormProps {
 }
 
 /**
- * CustomForm Component for React Native with NativeWind
+ * FormComponent Component for React Native with NativeWind
  */
-const CustomForm: React.FC<CustomFormProps> = ({
+const FormComponent: React.FC<FormComponentProps> = ({
   title = 'Form',
   fields = [],
   onSubmit,
@@ -186,7 +186,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
             </View>
           ))}
 
-          <BaseButton 
+          <ButtonComponent 
               title={submitLabel} 
               handlePress={handleSubmit}
           />
@@ -196,4 +196,4 @@ const CustomForm: React.FC<CustomFormProps> = ({
   );
 };
 
-export default CustomForm;
+export default FormComponent;

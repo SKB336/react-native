@@ -1,43 +1,45 @@
-import React, { useState } from "react";
-import { SafeAreaView, ScrollView, View, Image } from "react-native";
-import BaseButton from "~/components/BaseButton";
-import FormField from "~/components/FormField";
-import images from "~/constants/images";
+import { router } from 'expo-router';
+import FormComponent from '../../components/FormComponent';
+import { FormField  } from '../../types/forms';
 
 const EducationForm = () => {
-    const [form, setForm] = useState({
-        email: '',
-        password: ''
-    })
+  const handleSubmit = (values: any) => {
+    console.log('Form values:', values);
+    router.push('/(tabs)/create')
+  };
 
-    const submit = () => {}
+  // interface FieldOption {
+  //   label: string;
+  //   value: string;
+  // }
 
-    return (
-    <SafeAreaView className='bg-primary h-full'>
-        <ScrollView>
-        <View className='w-full justify-center min-h-[85vh] px-4 my-4'>
-            <FormField
-            title="Email"
-            value={form.email}
-            handleChangeText={(e : any) => setForm({ ...form, email: e })}
-            otherStyles="mt-5"
-            keyboardType="email-address"
-            />
+  // type FieldType = ''
 
-            <FormField
-            title="Password"
-            value={form.password}
-            handleChangeText={(e : any) => setForm({ ...form, password: e })}
-            otherStyles="mt-5"
-            />
+  // interface FormField {
+  //   name: string;
+  //   label: string;
+  //   type?: FieldType;
+  //   placeholder?: string;
+  //   required?: boolean;
+  //   options?: FieldOption[];
+  // }
 
-            <BaseButton
-            title="Sign In"
-            handlePress={submit}
-            containerStyles="mt-7"
-            />
-        </View>
-        </ScrollView>
-    </SafeAreaView>
-    )
-}
+  const formFields: FormField[] = [
+    { name: 'course', label: 'Course / Degree', required: true },
+    { name: 'institution', label: 'School / University', required: true},
+    { name: 'grade', label: 'Score / Grade', required: false },
+    { name: 'year', label: 'Year', required: true }
+  ];
+
+  return (
+    <FormComponent
+      title="Personal Information"
+      fields={formFields}
+      onSubmit={handleSubmit}
+      submitLabel="Save"
+      storageKey="personal_form"
+    />
+  );
+};
+
+export default EducationForm;

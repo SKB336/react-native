@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Dimensions, Image } from 'react-native';
 import { Svg, Circle } from 'react-native-svg';
-import BaseButton from '../components/BaseButton';
+import ButtonComponent from '../components/ButtonComponent';
 
 import { images } from '../constants';
 import { router } from 'expo-router';
@@ -45,7 +45,7 @@ const WelcomeScreen = () => {
                     <Text className="text-center font-semibold text-2xl text-black-500">Welcome to ---</Text>
                     <Text className="text-center text-gray-500">terms and conditions</Text>
                 </View>
-                <BaseButton title="Create your Resume" 
+                <ButtonComponent title="Create your Resume" 
                             handlePress={() => {router.replace("/(tabs)/home")}} 
                             containerStyles='w-[70%]' 
                             textStyles='text-secondary' />
