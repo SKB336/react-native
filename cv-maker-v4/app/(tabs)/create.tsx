@@ -18,18 +18,26 @@ const cardData: {
   { name: 'Reference',  icon: "paperclip",        path: "/(tabs)/home" },
 ];
 
+const cardDataExtra: {
+  name: string;
+  icon: keyof typeof FontAwesome.glyphMap;
+  path: string;
+}[] = [
+  { name: 'Add More', icon: "plus", path: "/(tabs)/home" }
+]
+
 export default function CreateScreen() {
   const onNext = () => {};
 
   return (
-    <View className="flex-1 relative border">
+    <View className="flex-1 relative ">
       {/* Colored background for top 1/4 of screen */}
       <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
       
       {/* Content sits on top */}
-      <View className="flex-1 p-4 z-10">
-        <View className='items-center'>
-          <View className="flex-row flex-wrap w-full justify-center gap-4">
+      <View className="flex-1 p-4 z-10 ">
+        <View className='items-center '>
+          <View className="flex-row flex-wrap w-full justify-start gap-4">
             {cardData.map((item, index) => (
               <CardComponent
                 key={index}
@@ -41,10 +49,23 @@ export default function CreateScreen() {
           </View>
         </View>
 
-        <View className='mt-6 border border-red-200'>
-          <Text className='text-xl'>
+        <View className='mt-6 px-1 '>
+          <Text className='text-xl text-primary font-semibold'>
             More Sections
           </Text>
+        </View>
+
+        <View className='mt-6 items-center '>
+          <View className="flex-row flex-wrap w-full justify-start gap-4">
+            {cardDataExtra.map((item, index) => (
+              <CardComponent
+                key={index}
+                iconName={item.icon}
+                name={item.name}
+                onPress={() => router.push(item.path as Href)}
+              />
+            ))}
+          </View>
         </View>
       </View>
 
