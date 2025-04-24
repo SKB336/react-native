@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 import RepeatingFormComponent from '../../components/RepeatingFormComponent';
 import { FormField } from '../../types/forms';
@@ -18,8 +18,9 @@ const EducationFormScreen = () => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-gray-50" keyboardShouldPersistTaps={`always`}>
-      <View className="p-4">
+    // <ScrollView className="flex-1 bg-gray-50" keyboardShouldPersistTaps={`always`}>
+      // <View className="p-4">
+      <SafeAreaView>
         <RepeatingFormComponent
           title="Education"
           fields={formFields}
@@ -27,8 +28,9 @@ const EducationFormScreen = () => {
           submitLabel="Save"
           storageKey="education_entries"
         />
-      </View>
-    </ScrollView>
+      </SafeAreaView>
+      // </View>
+    // </ScrollView>
   );
 };
 

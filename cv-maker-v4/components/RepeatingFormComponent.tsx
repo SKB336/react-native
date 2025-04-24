@@ -165,19 +165,18 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
     //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     //   className="flex-1"
     // >
-      <ScrollView className="flex-1 bg-gray-50" keyboardShouldPersistTaps={`always`}>
-        <View className="p-1">
+      <ScrollView className='' keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding:16 }}>
+        {/* <View className="p-4"> */}
           {formEntries.map((_, index) => (
-            <View key={index} className='mb-6 border border-black-100'>
+            <View key={index} className='mb-6 border border-primary'>
             {/* <View className="bg-white"> */}
               {/* <Text className="text-lg font-semibold mb-2">{title} {index + 1}</Text> */}
-              <View className="flex-row justify-between items-center px-2 bg-primary">
+              <View className="flex-row items-center justify-between px-2 bg-primary">
                 <Text className="text-lg font-semibold text-white">{title} {index + 1}</Text>
                 {index > 0 && (
-                  // <Button title="Remove" color="red" onPress={() => removeFormEntry(index)} />
-                  <TouchableOpacity onPress={() => removeFormEntry(index)}>
+                  <Pressable onPress={() => removeFormEntry(index)} className=''>
                     <FontAwesome6 name="trash" size={16} color="white" />
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
               </View>
               {/* </View> */}
@@ -202,7 +201,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
           <View className="mt-4">
             <ButtonComponent title={submitLabel} handlePress={handleSubmit} />
           </View>
-        </View>
+        {/* </View> */}
       </ScrollView>
     // </KeyboardAvoidingView>
   );
