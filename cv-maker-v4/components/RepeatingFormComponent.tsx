@@ -4,23 +4,24 @@ import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome6 } from '@expo/vector-icons'
 import { v4 as uuidv4 } from 'uuid';
+import { FormField } from '~/types/forms';
 
 // Type definitions
-type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
+// type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
 
-interface FieldOption {
-  label: string;
-  value: string;
-}
+// interface FieldOption {
+//   label: string;
+//   value: string;
+// }
 
-interface FormField {
-  name: string;
-  label: string;
-  type?: FieldType;
-  placeholder?: string;
-  required?: boolean;
-  options?: FieldOption[];
-}
+// interface FormField {
+//   name: string;
+//   label: string;
+//   type?: FieldType;
+//   placeholder?: string;
+//   required?: boolean;
+//   options?: FieldOption[];
+// }
 
 interface RepeatingFormComponentProps {
   title?: string;
@@ -168,7 +169,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
       <ScrollView className='' keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding:16 }}>
         {/* <View className="p-4"> */}
           {formEntries.map((_, index) => (
-            <View key={index} className='mb-6 border border-primary'>
+            <View key={index} className='mb-6 rounded-md overflow-hidden'>
             {/* <View className="bg-white"> */}
               {/* <Text className="text-lg font-semibold mb-2">{title} {index + 1}</Text> */}
               <View className="flex-row items-center justify-between px-2 bg-primary">

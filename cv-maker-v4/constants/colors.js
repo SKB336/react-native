@@ -1,5 +1,5 @@
 const COLORS = {
-    primary: '#1A5555', // Example primary color - REPLACE WITH YOUR ACTUAL COLOR
+    primary: '#1A5555', 
     secondary: '#03DAC6',
     white: '#FFFFFF',
     yellow_special: '#FFF466',

@@ -4,30 +4,11 @@ import { FormField  } from '../../types/forms';
 
 const PersonalForm = () => {
   const handleSubmit = (values: any) => {
-    console.log('Form values:', values);
+    console.log('PersonalForm values:', values);
     router.push('/(tabs)/create')
   };
-
-  // Define the type for field options (for select/dropdown fields)
-  // interface FieldOption {
-  //   label: string;
-  //   value: string;
-  // }
   
-  // Define the possible field types
-  // type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
-  
-  // Define the structure for a single form field
-  // interface FormField {
-  //   name: string;
-  //   label: string;
-  //   type?: FieldType;
-  //   placeholder?: string;
-  //   required?: boolean;
-  //   options?: FieldOption[];
-  // }
-  
-  // Define the type for the entire form fields array
+  // Types for the entire form fields array
   const formFields: FormField[] = [
     { name: 'fullName', label: 'Full Name', required: true },
     { name: 'address', label: 'Address', required: true },

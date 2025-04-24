@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FormField } from '~/types/forms';
 
 // Type definitions
-type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
+// type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
 
-interface FieldOption {
-  label: string;
-  value: string;
-}
+// interface FieldOption {
+//   label: string;
+//   value: string;
+// }
 
-interface FormField {
-  name: string;
-  label: string;
-  type?: FieldType;
-  placeholder?: string;
-  required?: boolean;
-  options?: FieldOption[];
-}
+// interface FormField {
+//   name: string;
+//   label: string;
+//   type?: FieldType;
+//   placeholder?: string;
+//   required?: boolean;
+//   options?: FieldOption[];
+// }
 
 interface FormComponentProps {
   title?: string;

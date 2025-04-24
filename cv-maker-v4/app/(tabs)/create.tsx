@@ -12,10 +12,10 @@ const cardData: {
 }[] = [
   { name: 'Personal',   icon: "user",             path: "/(forms)/personal" },
   { name: 'Education',  icon: "graduation-cap",   path: "/(forms)/education" },
-  { name: 'Experience', icon: "briefcase",        path: "/(tabs)/home" },
-  { name: 'Skills',     icon: "star",             path: "/(tabs)/home" },
-  { name: 'Objective',  icon: "bullseye",         path: "/(tabs)/home" },
-  { name: 'Reference',  icon: "paperclip",        path: "/(tabs)/home" },
+  { name: 'Experience', icon: "briefcase",        path: "/(forms)/experience" },
+  { name: 'Skills',     icon: "star",             path: "/(forms)/skill" },
+  { name: 'Objective',  icon: "bullseye",         path: "/(forms)/objective" },
+  { name: 'Reference',  icon: "paperclip",        path: "/(forms)/reference" },
 ];
 
 const cardDataExtra: {
@@ -69,11 +69,9 @@ export default function CreateScreen() {
         </View>
       </View>
 
-      
-
       <View 
-        className='py-6 px-4'>
-
+        className='py-6 px-4'
+      >
         <ButtonComponent
           title="Next"
           handlePress={onNext}
