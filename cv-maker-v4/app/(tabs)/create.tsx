@@ -4,6 +4,7 @@ import icons from '~/constants/icons';
 import { Href, router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import ButtonComponent from '~/components/ButtonComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const cardData: {
   name: string;
@@ -27,7 +28,19 @@ const cardDataExtra: {
 ]
 
 export default function CreateScreen() {
-  const onNext = () => {};
+  const onNext = async () => {
+    try {
+      router.push('/templates')
+      const keys = await AsyncStorage.getAllKeys();
+      const keyValuePairs = await AsyncStorage.multiGet(keys);
+  
+      keyValuePairs.forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+      });
+    } catch (error) {
+      console.error('Error fetching key-value pairs:', error);
+    }
+  };  
 
   return (
     <View className="flex-1 relative ">

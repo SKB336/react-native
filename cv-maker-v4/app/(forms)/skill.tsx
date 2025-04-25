@@ -15,15 +15,15 @@ const SkillForm = () => {
   };
 
   return (
-      <SafeAreaView>
-        <RepeatingFormComponent
-          title="Skill"
-          fields={formFields}
-          onSubmit={handleSubmit}
-          submitLabel="Save"
-          storageKey="skill_entries"
-        />
-      </SafeAreaView>
+    <SafeAreaView>
+      <RepeatingFormComponent
+        title="Skill"
+        fields={formFields}
+        onSubmit={handleSubmit}
+        submitLabel="Save"
+        storageKey="skill_entries"
+      />
+    </SafeAreaView>
   );
 };
 
