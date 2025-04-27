@@ -1,5 +1,6 @@
-import BasicTemplate from "../components/templates/BasicTemplate.html";
+import { BasicTemplate } from "../components/templates/BasicTemplate";
 
-export default {
+
+export const templates = {
     BasicTemplate
-}
+};

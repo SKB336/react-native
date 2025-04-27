@@ -13,7 +13,7 @@ const CardComponent: React.FC<CardProps> = ({ name, iconName, onPress }) => {
   return (
     <Pressable
       onPress={onPress}
-      className="w-[30%] aspect-square bg-secondary items-center justify-center rounded-lg shadow-md"
+      className="w-[30%] aspect-square bg-white items-center justify-center rounded-lg shadow-md"
     >
         <View className="flex-1 w-full items-center justify-center">
           <FontAwesome name={iconName} size={30} color={COLORS.primary}/>

@@ -197,7 +197,13 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
             </View>
           ))}
 
-          <Button title="Add Another" onPress={addFormEntry} />
+          <Pressable 
+            className="bg-secondary rounded-lg p-3 items-center justify-center" 
+            onPress={addFormEntry}
+          >
+            <Text className="text-white font-semibold">Add Another</Text>
+          </Pressable>
+
 
           <View className="mt-4">
             <ButtonComponent title={submitLabel} handlePress={handleSubmit} />
