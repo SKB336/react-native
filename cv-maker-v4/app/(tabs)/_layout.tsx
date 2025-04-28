@@ -10,11 +10,11 @@ const TabIcon = ({icon, color, name, focused}: any) => {
       <Image
         source={icon}
         resizeMode='contain'
-        tintColor={color}
+        tintColor={focused ? COLORS.secondary : color}
         className='w-6 h-6'
       />
       {/* Ternary operator: If (focused) return 'font-psemibold' else 'font-pregular' */}
-      <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: color}}>
+      <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: focused ? COLORS.secondary : color}}>
         {name}
       </Text>
     </View>

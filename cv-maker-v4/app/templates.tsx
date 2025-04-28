@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { View, Text, Button, Pressable, Image, Animated } from 'react-native';
+import { View, Text, Pressable, Image, Animated, ScrollView } from 'react-native';
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing'
-import * as FileSystem from 'expo-file-system';
 import { templates } from '../constants/templates';
-// import { templates } from '~/constants';
+import ButtonComponent from '~/components/ButtonComponent';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Template = () => {
@@ -16,9 +17,8 @@ const Template = () => {
     // Only run the animation if a template is selected
     if (selectedTemplate) {
       // --- FIX: Reset values instantly before animating ---
-      opacity.setValue(0);      // Reset opacity to start value
-      scale.setValue(0.8);      // Reset scale to start value
-      // ----------------------------------------------------
+      opacity.setValue(0);
+      scale.setValue(0.8);
 
       // Start the "in" animation
       Animated.parallel([
@@ -29,7 +29,7 @@ const Template = () => {
         }),
         Animated.spring(scale, {
           toValue: 1, // Animate TO full size
-          // You can adjust spring properties if needed:
+          // Adjust spring properties if needed:
           // friction: 7,
           // tension: 40,
           useNativeDriver: true,
@@ -44,17 +44,65 @@ const Template = () => {
 
 
   let generatePDF = async () => {
-    console.log("temp ", templates)
+    if (!selectedTemplate) return;
+  
+    console.log("Selected Template:", selectedTemplate);
+  
+    // 1. Get the raw HTML of the selected template
+    const template = templates.find(template => template.name === selectedTemplate);
+    let html = template?.html ?? '';
+  
+    // 2. Get all the keys you want from AsyncStorage
+    const keys = await AsyncStorage.getAllKeys(); // gets all keys
+    const stores = await AsyncStorage.multiGet(keys); // gets all key-value pairs
+    
+    const data: Record<string, string> = {}; // to store key-value as object
+    stores.forEach(([key, value]) => {
+      if (key && value) {
+        data[key] = value;
+      }
+    });
+  
+    console.log(data, keys)
+
+    for (const [_key, value] of Object.entries(data)) {
+      const parsedValue = JSON.parse(value)
+
+      if (Array.isArray(parsedValue)) {
+        for (const item of parsedValue) {
+          for (const [innerKey, innerValue] of Object.entries(item)) {
+            console.log(innerKey, innerValue);
+            const placeholder = `{{${innerKey}}}`;
+            html = html.replaceAll(placeholder, String(innerValue));
+          }
+        }
+      }
+      else {
+        for (const [innerKey, innerValue] of Object.entries(JSON.parse(value))) {
+          console.log(innerKey, innerValue);
+          const placeholder = `{{${innerKey}}}`;
+          html = html.replaceAll(placeholder, String(innerValue));
+        }
+      }
+    }
+  
+    console.log(html)
+
+    // 4. Now generate the file
     // const file = await printToFileAsync({
     //   html: html,
-    //   base64: false
+    //   base64: false,
     // });
-
+  
     // await shareAsync(file.uri);
-  }
+  };
+  
 
   return (
-    <View className="flex-row flex-wrap justify-between p-4">
+    <>
+    {/* <SafeAreaView className='flex-1 border'> */}
+    {/* <ScrollView className='border'> */}
+    <View className="flex-row flex-wrap justify-between p-4 border">
       {templates.map((template) => {
         const isSelected = selectedTemplate === template.name
 
@@ -67,32 +115,42 @@ const Template = () => {
           } overflow-hidden`}
         >
           <View className="relative">
-          <Image
-            className={`w-full h-60 rounded-xl ${isSelected ? 'opacity-70' : 'opacity-100'}`}
-            resizeMode="cover"
-            source={template.thumbnail}
-          />
-          {isSelected && (
-                <Animated.View
-                  style={{
-                    position: 'absolute',
-                    bottom: 8, // bottom-2 (tailwind is 0.5rem ~ 8px)
-                    left: 0,
-                    right: 0,
-                    alignItems: 'center',
-                    opacity,
-                    transform: [{ scale }],
-                  }}
-                >
-                  <Text className="text-white font-bold bg-primary px-3 py-1 rounded-full overflow-hidden">
-                    {template.name}
-                  </Text>
-                </Animated.View>
-              )}
-              </View>
+            <Image
+              className={`w-full h-60 rounded-xl ${isSelected ? 'opacity-70' : 'opacity-100'}`}
+              resizeMode="cover"
+              source={template.thumbnail}
+            />
+            {isSelected && (
+              <Animated.View
+                style={{
+                  position: 'absolute',
+                  bottom: 8, // bottom-2 (tailwind is 0.5rem ~ 8px)
+                  left: 0,
+                  right: 0,
+                  alignItems: 'center',
+                  opacity,
+                  transform: [{ scale }],
+                }}
+              >
+                <Text className="text-white font-bold bg-primary px-3 py-1 rounded-full overflow-hidden">
+                  {template.name}
+                </Text>
+              </Animated.View>
+            )}
+          </View>
         </Pressable>
       )})}
     </View>
+    {/* </ScrollView> */}
+    <View className='absolute bottom-2 w-full py-6 px-4'>
+      <ButtonComponent
+        title="Generate"
+        handlePress={generatePDF}
+        disabled={!selectedTemplate}
+      />
+    </View>
+    {/* </SafeAreaView> */}
+    </>
   );
 };
 

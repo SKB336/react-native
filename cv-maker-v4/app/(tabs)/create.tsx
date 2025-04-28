@@ -1,10 +1,13 @@
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import CardComponent from '~/components/CardComponent';
 import icons from '~/constants/icons';
 import { Href, router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import ButtonComponent from '~/components/ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Font from 'expo-font';
+import { useEffect, useState } from 'react';
+import COLORS from '~/constants/colors';
 
 const cardData: {
   name: string;
@@ -28,6 +31,19 @@ const cardDataExtra: {
 ]
 
 export default function CreateScreen() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        ...FontAwesome.font,
+      });
+      setFontsLoaded(true);
+    }
+    
+    loadFonts();
+  }, []);
+
   const onNext = async () => {
     try {
       router.push('/templates')
@@ -43,53 +59,58 @@ export default function CreateScreen() {
   };  
 
   return (
-    <View className="flex-1 relative ">
-      {/* Colored background for top 1/4 of screen */}
-      <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
-      
-      {/* Content sits on top */}
-      <View className="flex-1 p-4 z-10 ">
-        <View className='items-center '>
-          <View className="flex-row flex-wrap w-full justify-start gap-4">
-            {cardData.map((item, index) => (
-              <CardComponent
-                key={index}
-                iconName={item.icon}
-                name={item.name}
-                onPress={() => router.push(item.path as Href)}
-              />
-            ))}
+    <>
+      {fontsLoaded ? (
+        <View className="flex-1 relative ">
+          {/* Colored background for top 1/4 of screen */}
+          <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
+          
+          <View className="flex-1 p-4 z-10 ">
+            <View className='items-center '>
+              <View className="flex-row flex-wrap w-full justify-start gap-4">
+                {cardData.map((item, index) => (
+                  <CardComponent
+                    key={index}
+                    iconName={item.icon}
+                    name={item.name}
+                    onPress={() => router.push(item.path as Href)}
+                  />
+                ))}
+              </View>
+            </View>
+
+            <View className='mt-6 px-1 '>
+              <Text className='text-xl text-primary font-semibold'>
+                More Sections
+              </Text>
+            </View>
+
+            <View className='mt-6 items-center '>
+              <View className="flex-row flex-wrap w-full justify-start gap-4">
+                {cardDataExtra.map((item, index) => (
+                  <CardComponent
+                    key={index}
+                    iconName={item.icon}
+                    name={item.name}
+                    onPress={() => router.push(item.path as Href)}
+                  />
+                ))}
+              </View>
+            </View>
+          </View>
+
+          <View className='py-6 px-4'>
+            <ButtonComponent
+              title="Next"
+              handlePress={onNext}
+            />
           </View>
         </View>
-
-        <View className='mt-6 px-1 '>
-          <Text className='text-xl text-primary font-semibold'>
-            More Sections
-          </Text>
+      ) : (
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
-
-        <View className='mt-6 items-center '>
-          <View className="flex-row flex-wrap w-full justify-start gap-4">
-            {cardDataExtra.map((item, index) => (
-              <CardComponent
-                key={index}
-                iconName={item.icon}
-                name={item.name}
-                onPress={() => router.push(item.path as Href)}
-              />
-            ))}
-          </View>
-        </View>
-      </View>
-
-      <View 
-        className='py-6 px-4'
-      >
-        <ButtonComponent
-          title="Next"
-          handlePress={onNext}
-          />
-      </View>
-    </View>
+      )}
+    </>
   );
 }
