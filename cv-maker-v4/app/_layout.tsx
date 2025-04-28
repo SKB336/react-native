@@ -1,5 +1,6 @@
 import React from 'react'
 import { Stack } from 'expo-router'
+import COLORS from '~/constants/colors'
 
 const RootLayout = () => {
   return (
@@ -8,6 +9,17 @@ const RootLayout = () => {
       <Stack.Screen name='welcome' options={{ headerShown: false }} />
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
       <Stack.Screen name='(forms)' options={{ headerShown: false }} />
+      <Stack.Screen 
+        name='templates' 
+        options={{ 
+          headerShown: true, 
+          title: 'Templates', 
+          headerStyle: {
+            backgroundColor: COLORS.primary,                
+          },
+          headerTintColor: "#FFFFFF"
+        }} 
+      />
     </Stack>
   )
 }

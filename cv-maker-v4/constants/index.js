@@ -1,5 +1,5 @@
 import icons from "./icons";
 import images from './images';
-import templates from './templates'
+import { templates, thumbnails } from './templates'
 
-export { icons, images, templates };
+export { icons, images, templates, thumbnails };

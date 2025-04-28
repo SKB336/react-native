@@ -36,6 +36,9 @@ module.exports = {
       //   pblack: ["Poppins-Black", "sans-serif"],
       // },
     },
+    borderColor: (theme) => ({
+      ...theme('colors'),
+    }),
   },
   plugins: [],
 }
