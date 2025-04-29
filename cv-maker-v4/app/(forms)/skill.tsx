@@ -6,7 +6,7 @@ import { FormField } from '../../types/forms';
 
 const SkillForm = () => {
   const formFields: FormField[] = [
-    { name: 'skill', label: 'Skill', required: true }
+    { name: 'skill', label: 'Skill', required: false }
   ];
 
   const handleSubmit = (allEntries: Record<string, any>[]) => {

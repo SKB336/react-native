@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Button, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Button, Pressable, ActivityIndicator } from 'react-native';
 import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome6 } from '@expo/vector-icons'
 import { v4 as uuidv4 } from 'uuid';
 import { FormField } from '~/types/forms';
+import COLORS from '~/constants/colors';
 
 // Type definitions
 // type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
@@ -42,6 +43,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
 }) => {
   const [formEntries, setFormEntries] = useState<Record<string, any>[]>(initialValues);
   const [errorsList, setErrorsList] = useState<Record<string, string | null>[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadFormValues = async () => {
@@ -52,6 +54,8 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
         }
       } catch (err) {
         console.error('Failed to load form values:', err);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -160,6 +164,13 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
         );
     }
   };
+
+  // if (loading) {
+  //   return (
+  //     <View className="flex-1 justify-center items-center">
+  //     </View>
+  //   )
+  // }
 
   return (
     // <KeyboardAvoidingView

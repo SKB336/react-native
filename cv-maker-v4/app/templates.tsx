@@ -6,6 +6,7 @@ import { templates } from '../constants/templates';
 import ButtonComponent from '~/components/ButtonComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { flagEmptyKeys } from '../utils/formatData';
 
 
 const Template = () => {
@@ -62,39 +63,50 @@ const Template = () => {
         data[key] = value;
       }
     });
-  
-    console.log(data, keys)
 
-    for (const [_key, value] of Object.entries(data)) {
+    console.log(data)
+    let cleanData = flagEmptyKeys(data);
+    console.log(cleanData)
+
+    for (const [key, value] of Object.entries(cleanData)) {
       const parsedValue = JSON.parse(value)
-
+      console.log(parsedValue);
       if (Array.isArray(parsedValue)) {
+        let injection = ``
         for (const item of parsedValue) {
+          injection += template?.injections?.[key] || '';
           for (const [innerKey, innerValue] of Object.entries(item)) {
-            console.log(innerKey, innerValue);
             const placeholder = `{{${innerKey}}}`;
-            html = html.replaceAll(placeholder, String(innerValue));
+            injection = injection.replaceAll(placeholder, String(innerValue));
           }
         }
+        html = html.replaceAll(`{{${key}}}`, injection);
       }
-      else {
+
+      else if (typeof parsedValue === 'object' && parsedValue !== null) {
         for (const [innerKey, innerValue] of Object.entries(JSON.parse(value))) {
-          console.log(innerKey, innerValue);
           const placeholder = `{{${innerKey}}}`;
           html = html.replaceAll(placeholder, String(innerValue));
         }
+      }
+
+      else {
+        console.log("Else", key)
+        // This regex will match the entire div with id equal to the key
+        const regex = new RegExp(`<div[^>]*id=["']${key}["'][^>]*>.*?</div>`, 'gs');
+        html = html.replace(regex, '');
       }
     }
   
     console.log(html)
 
     // 4. Now generate the file
-    // const file = await printToFileAsync({
-    //   html: html,
-    //   base64: false,
-    // });
+    const file = await printToFileAsync({
+      html: html,
+      base64: false,
+    });
   
-    // await shareAsync(file.uri);
+    await shareAsync(file.uri);
   };
   
 
