@@ -114,7 +114,7 @@ const Template = () => {
     <>
     {/* <SafeAreaView className='flex-1 border'> */}
     {/* <ScrollView className='border'> */}
-    <View className="flex-row flex-wrap justify-between p-4 border">
+    <View className="flex-row flex-wrap justify-between p-4">
       {templates.map((template) => {
         const isSelected = selectedTemplate === template.name
 
@@ -136,7 +136,7 @@ const Template = () => {
               <Animated.View
                 style={{
                   position: 'absolute',
-                  bottom: 8, // bottom-2 (tailwind is 0.5rem ~ 8px)
+                  bottom: 8,
                   left: 0,
                   right: 0,
                   alignItems: 'center',

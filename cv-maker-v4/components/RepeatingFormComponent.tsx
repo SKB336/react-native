@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Button, Pressable, ActivityIndicator } from 'react-native';
 import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,6 +6,7 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import { v4 as uuidv4 } from 'uuid';
 import { FormField } from '~/types/forms';
 import COLORS from '~/constants/colors';
+import { useNavigation } from 'expo-router';
 
 // Type definitions
 // type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
@@ -44,6 +45,13 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
   const [formEntries, setFormEntries] = useState<Record<string, any>[]>(initialValues);
   const [errorsList, setErrorsList] = useState<Record<string, string | null>[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: !loading,
+    });
+  }, [navigation, loading]);
 
   useEffect(() => {
     const loadFormValues = async () => {
@@ -165,12 +173,20 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <View className="flex-1 justify-center items-center">
-  //     </View>
-  //   )
-  // }
+  // useNavigationOptions({
+  //   headerShown: !loading,
+  // });
+  // navigation.setOptions({
+  //   headerShown: !loading,
+  // });
+  
+  if (loading) {
+    return (
+      <View className="h-full justify-center items-center">
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    )
+  }
 
   return (
     // <KeyboardAvoidingView

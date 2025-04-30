@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Dimensions, Image } from 'react-native';
-import { Svg, Circle } from 'react-native-svg';
+import { View, Text, Dimensions, Image, Pressable } from 'react-native';
+import { Svg, Circle, Rect, Polygon } from 'react-native-svg';
 import ButtonComponent from '../components/ButtonComponent';
 
 import { images } from '../constants';
@@ -49,6 +49,22 @@ const WelcomeScreen = () => {
                             handlePress={() => {router.replace("/(tabs)/home")}} 
                             containerStyles='w-[70%]' 
                             textStyles='text-secondary' />
+                <Pressable className="w-[120px] h-[120px] rounded-lg overflow-hidden items-center justify-center" onPress={()=>{}}>
+      <Svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 120 120"
+        className="absolute"
+      >
+        <Rect fill="#00bb77" width="120" height="120" />
+        <Polygon
+          fill="#000"
+          fillOpacity="0.1"
+          points="120 0 120 60 90 30 60 0 0 0 0 0 60 60 0 120 60 120 90 90 120 60 120 0"
+        />
+      </Svg>
+      <Text className="text-white font-bold">Click Me</Text>
+    </Pressable>
             </View>
         </View>
     );
