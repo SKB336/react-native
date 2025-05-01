@@ -100,7 +100,7 @@ const Template = () => {
   
     console.log(html)
 
-    // 4. Now generate the file
+    // 4. Generate the file
     const file = await printToFileAsync({
       html: html,
       base64: false,

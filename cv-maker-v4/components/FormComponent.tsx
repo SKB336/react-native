@@ -4,22 +4,6 @@ import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FormField } from '~/types/forms';
 
-// Type definitions
-// type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
-
-// interface FieldOption {
-//   label: string;
-//   value: string;
-// }
-
-// interface FormField {
-//   name: string;
-//   label: string;
-//   type?: FieldType;
-//   placeholder?: string;
-//   required?: boolean;
-//   options?: FieldOption[];
-// }
 
 interface FormComponentProps {
   title?: string;
@@ -30,9 +14,7 @@ interface FormComponentProps {
   storageKey?: string;
 }
 
-/**
- * FormComponent Component for React Native with NativeWind
- */
+
 const FormComponent: React.FC<FormComponentProps> = ({
   title = 'Form',
   fields = [],

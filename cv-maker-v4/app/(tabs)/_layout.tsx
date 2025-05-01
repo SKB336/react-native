@@ -3,6 +3,7 @@ import React from 'react'
 import { Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
 import COLORS from '../../constants/colors'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const TabIcon = ({icon, color, name, focused}: any) => {
   return (
@@ -23,7 +24,7 @@ const TabIcon = ({icon, color, name, focused}: any) => {
 
 const MainTabIcon = ({icon, color, name, focused}: any) => {
   return (
-    <View className='items-center justify-center gap-2'>
+    <View className='items-center justify-center gap-2 pt-10 ps-10'>
       <Image
         source={icon}
         resizeMode='contain'
@@ -56,19 +57,19 @@ const TabsLayout = () => {
         tabBarStyle: {
           position: 'absolute',
           bottom: 25,
-          left: 20,
-          right: 20,
+          marginHorizontal: 20,
           // elevation: 0,
           backgroundColor: '#ffffff',
           borderTopColor: 'transparent',
           borderRadius: 15,
           height: 75,
-          ...styles.shadow
+          ...styles.shadow,
+          // paddingVertical: 10,
         }
       }}
+
     >
       <Tabs.Screen 
-        
         name="home" 
         options={{ 
           title: 'Home', 
@@ -80,7 +81,13 @@ const TabsLayout = () => {
               name="Home"
               focused={focused}
             />
-          )
+          ),
+          tabBarIconStyle: {
+            // display: 'flex',
+            width: '100%',
+            height: '100%'
+          },
+          // tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />
         }} 
       />
       
@@ -106,6 +113,7 @@ const TabsLayout = () => {
           tabBarButton: (props) => { 
             return <CustomTabBarButton {...props} />
           },
+          tabBarLabel: () => null,
           headerLeft: ({  }) => (
             <Pressable 
               onPress={() => {
@@ -138,7 +146,12 @@ const TabsLayout = () => {
               name="PDFs"
               focused={focused}
             />
-          )
+          ),
+          tabBarIconStyle: {
+            width: '100%',
+            height: '100%',
+            // marginRight: 25,
+          },
         }} 
       />
     </Tabs>

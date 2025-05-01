@@ -8,22 +8,6 @@ import { FormField } from '~/types/forms';
 import COLORS from '~/constants/colors';
 import { useNavigation } from 'expo-router';
 
-// Type definitions
-// type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
-
-// interface FieldOption {
-//   label: string;
-//   value: string;
-// }
-
-// interface FormField {
-//   name: string;
-//   label: string;
-//   type?: FieldType;
-//   placeholder?: string;
-//   required?: boolean;
-//   options?: FieldOption[];
-// }
 
 interface RepeatingFormComponentProps {
   title?: string;
