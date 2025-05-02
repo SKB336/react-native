@@ -24,7 +24,7 @@ const TabIcon = ({icon, color, name, focused}: any) => {
 
 const MainTabIcon = ({icon, color, name, focused}: any) => {
   return (
-    <View className='items-center justify-center gap-2 pt-10 ps-10'>
+    <View className='items-center justify-center gap-2'>
       <Image
         source={icon}
         resizeMode='contain'
@@ -64,10 +64,8 @@ const TabsLayout = () => {
           borderRadius: 15,
           height: 75,
           ...styles.shadow,
-          // paddingVertical: 10,
         }
       }}
-
     >
       <Tabs.Screen 
         name="home" 
@@ -83,11 +81,9 @@ const TabsLayout = () => {
             />
           ),
           tabBarIconStyle: {
-            // display: 'flex',
             width: '100%',
             height: '100%'
           },
-          // tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />
         }} 
       />
       
@@ -109,7 +105,11 @@ const TabsLayout = () => {
               name="Create"
               focused={focused}
             />
-          ), 
+          ),
+          tabBarIconStyle: {
+            width: '100%',
+            height: '100%'
+          },
           tabBarButton: (props) => { 
             return <CustomTabBarButton {...props} />
           },
@@ -118,7 +118,6 @@ const TabsLayout = () => {
             <Pressable 
               onPress={() => {
                 router.push({pathname: '/(tabs)/home', params: {}})
-                // <Link href="/(tabs)/home" push/>
               }} 
               className="pl-6 w-[50]">
               <Image
@@ -126,11 +125,9 @@ const TabsLayout = () => {
                 className="w-5 h-5 tint-white"
                 tintColor="#FFFFFF"
               />
-              {/* <FontAwesome name="arrow-left" size={16} /> */}
             </Pressable>
           ),
           headerShown: true
-
         }}
       />
 
@@ -150,7 +147,6 @@ const TabsLayout = () => {
           tabBarIconStyle: {
             width: '100%',
             height: '100%',
-            // marginRight: 25,
           },
         }} 
       />
