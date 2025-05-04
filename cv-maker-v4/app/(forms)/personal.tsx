@@ -17,6 +17,7 @@ const PersonalForm = () => {
     { name: 'dateOfBirth', label: 'Date of Birth', type: 'date', required: true },
     { name: 'website', label: 'Website', type: 'url', required: true },
     { name: 'linkedIn', label: 'Linked In', type: 'url', required: true },
+    { name: 'photo', label: 'Photo', type: 'image', required: true },
     // { name: 'category', label: 'Category', type: 'select', options: [{ label: 'Option 1', value: 'option1' }, 
     //   { label: 'Option 2', value: 'option2' }] }
   ];

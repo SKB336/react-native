@@ -103,6 +103,8 @@ const Template = () => {
     // 4. Generate the file
     const file = await printToFileAsync({
       html: html,
+      height:842, 
+      width:595,
       base64: false,
     });
   

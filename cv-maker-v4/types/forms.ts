@@ -3,7 +3,7 @@ export interface FieldOption {
     value: string;
 }
 
-export type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url';
+export type FieldType = 'text' | 'textarea' | 'select' | 'email' | 'password' | 'number' | 'date' | 'url' | 'image';
 
 export interface FormField {
     name: string;

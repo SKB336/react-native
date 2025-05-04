@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FormField } from '~/types/forms';
+import * as ImagePicker from 'expo-image-picker';
 
 
 interface FormComponentProps {
@@ -133,6 +134,36 @@ const FormComponent: React.FC<FormComponentProps> = ({
               </TouchableOpacity>
             ))}
           </View>
+        );
+      case 'image':
+        return (
+          <TouchableOpacity
+            key={name}
+            onPress={async () => {
+              const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 1,
+              });
+              if (!result.canceled) {
+                handleChange(name, result.assets[0].uri);
+              }
+            }}
+            className="w-full mb-4"
+          >
+            <View className="w-full p-4 border border-gray-300 rounded-md bg-white items-center justify-center">
+        {formValues[name] ? (
+          <Image
+            source={{ uri: formValues[name] }}
+            className="w-full aspect-square rounded-md"
+            resizeMode="cover"
+          />
+        ) : (
+          <Text className="text-gray-500">Upload Image</Text>
+        )}
+      </View>
+          </TouchableOpacity>
         );
       case 'text':
       default:
