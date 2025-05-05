@@ -3,7 +3,8 @@ import React from 'react'
 import { Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
 import COLORS from '../../constants/colors'
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TabIcon = ({icon, color, name, focused}: any) => {
   return (
@@ -49,6 +50,22 @@ const CustomTabBarButton = ({ children, onPress }: PressableProps & { children: 
 }
 
 const TabsLayout = () => {
+  const resetStorage = async ({ keys }: { keys?: string[] | null }) => {
+    try {
+      if (Array.isArray(keys) && 0 < keys.length) {
+        // Remove only specified keys
+        await AsyncStorage.multiRemove(keys);
+        console.log('Selected keys removed:', keys);
+      } else {
+        // Clear all storage
+        await AsyncStorage.clear();
+        console.log('All storage cleared.');
+      }
+    } catch (error) {
+      console.error('Error clearing storage:', error);
+    }
+  }
+
   return (
     <>
     <Tabs
@@ -114,6 +131,14 @@ const TabsLayout = () => {
             return <CustomTabBarButton {...props} />
           },
           tabBarLabel: () => null,
+          headerRight: ({  }) => (
+            <Pressable
+              onPress={() => resetStorage({})}
+              className="pr-6"
+            >
+              <FontAwesome name="rotate-right" size={24} color="white" />
+            </Pressable>
+          ),
           headerLeft: ({  }) => (
             <Pressable 
               onPress={() => {
