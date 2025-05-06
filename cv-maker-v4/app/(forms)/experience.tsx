@@ -8,8 +8,8 @@ const ExperienceForm = () => {
   const formFields: FormField[] = [
     { name: 'company', label: 'Company Name', required: true },
     { name: 'position', label: 'Job Title', required: true },
-    { name: 'dateFrom', label: 'Start Date', required: false },
-    { name: 'dateTo', label: 'End Date', required: false },
+    { name: 'dateFrom', label: 'Start Date', required: true },
+    { name: 'dateTo', label: 'End Date', required: true },
     { name: 'details', label: 'Details', type: 'textarea', required: false }
   ];
 

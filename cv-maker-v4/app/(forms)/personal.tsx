@@ -11,15 +11,13 @@ const PersonalForm = () => {
   // Types for the entire form fields array
   const formFields: FormField[] = [
     { name: 'fullName', label: 'Full Name', required: true },
-    { name: 'address', label: 'Address', required: true },
+    { name: 'address', label: 'Address', required: false },
     { name: 'email', label: 'Email Address', type: 'email', required: true },
     { name: 'phone', label: 'Phone Number', type: 'number', required: true },
-    { name: 'dateOfBirth', label: 'Date of Birth', type: 'date', required: true },
-    { name: 'website', label: 'Website', type: 'url', required: true },
-    { name: 'linkedIn', label: 'Linked In', type: 'url', required: true },
-    { name: 'photo', label: 'Photo', type: 'image', required: true },
-    // { name: 'category', label: 'Category', type: 'select', options: [{ label: 'Option 1', value: 'option1' }, 
-    //   { label: 'Option 2', value: 'option2' }] }
+    { name: 'dateOfBirth', label: 'Date of Birth', type: 'date', required: false },
+    { name: 'website', label: 'Website', type: 'url', required: false },
+    { name: 'linkedIn', label: 'Linked In', type: 'url', required: false },
+    { name: 'photo', label: 'Photo', type: 'image', required: false },
   ];
 
   return (

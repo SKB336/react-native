@@ -46,7 +46,7 @@ export default function CreateScreen() {
 
   const onNext = async () => {
     try {
-      router.push('/templates')
+      router.push('/templates2')
       const keys = await AsyncStorage.getAllKeys();
       const keyValuePairs = await AsyncStorage.multiGet(keys);
   

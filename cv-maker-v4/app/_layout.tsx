@@ -20,6 +20,17 @@ const RootLayout = () => {
           headerTintColor: "#FFFFFF"
         }} 
       />
+      <Stack.Screen 
+        name='templates2' 
+        options={{ 
+          headerShown: true, 
+          title: 'Templates', 
+          headerStyle: {
+            backgroundColor: "red",                
+          },
+          headerTintColor: "#FFFFFF"
+        }} 
+      />
     </Stack>
   )
 }

@@ -10,7 +10,7 @@ const ReferenceForm = () => {
     { name: 'position', label: 'Job Title', required: true },
     { name: 'company', label: 'Company Name', required: true },
     { name: 'email', label: 'Email', type: 'email', required: true },
-    { name: 'phone', label: 'Phone', type: 'number', required: true }
+    { name: 'phone', label: 'Phone', type: 'number', required: false }
   ];
 
   const handleSubmit = (allEntries: Record<string, any>[]) => {
