@@ -1,7 +1,7 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, FlatList } from 'react-native';
 import CardComponent from '~/components/CardComponent';
 import icons from '~/constants/icons';
-import { Href, router } from 'expo-router';
+import { Href, Route, router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import ButtonComponent from '~/components/ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,20 +12,20 @@ import COLORS from '~/constants/colors';
 const cardData: {
   name: string;
   icon: keyof typeof FontAwesome.glyphMap;
-  path: string;
+  path: Route;
 }[] = [
   { name: 'Personal',   icon: "user",             path: "/(forms)/personal" },
   { name: 'Education',  icon: "graduation-cap",   path: "/(forms)/education" },
   { name: 'Experience', icon: "briefcase",        path: "/(forms)/experience" },
   { name: 'Skills',     icon: "star",             path: "/(forms)/skill" },
   { name: 'Objective',  icon: "bullseye",         path: "/(forms)/objective" },
-  { name: 'Reference',  icon: "paperclip",        path: "/(forms)/reference" },
+  // { name: 'Reference',  icon: "paperclip",        path: "/(forms)/reference" },
 ];
 
 const cardDataExtra: {
   name: string;
   icon: keyof typeof FontAwesome.glyphMap;
-  path: string;
+  path: Route;
 }[] = [
   { name: 'Add More', icon: "plus", path: "/(tabs)/home" }
 ]
@@ -46,7 +46,7 @@ export default function CreateScreen() {
 
   const onNext = async () => {
     try {
-      router.push('/templates2')
+      router.push('/templates2' as Route)
       const keys = await AsyncStorage.getAllKeys();
       const keyValuePairs = await AsyncStorage.multiGet(keys);
   
@@ -66,20 +66,38 @@ export default function CreateScreen() {
           <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
           
           <View className="flex-1 p-4 z-10 ">
-            <View className='items-center '>
+            {/* <View className='items-center '>
               <View className="flex-row flex-wrap w-full justify-start gap-4">
                 {cardData.map((item, index) => (
                   <CardComponent
                     key={index}
                     iconName={item.icon}
                     name={item.name}
-                    onPress={() => router.push(item.path as Href)}
+                    onPress={() => router.push(item.path)}
                   />
                 ))}
               </View>
-            </View>
+            </View> */}
 
-            <View className='mt-6 px-1 '>
+            <FlatList
+              data={cardData}
+              renderItem={({item}) => (
+                <CardComponent
+                  iconName={item.icon}
+                  name={item.name}
+                  onPress={() => router.push(item.path)}
+                />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={3}  // Set the number of columns to 3
+              style={{ borderColor: 'red', borderWidth: 1, flexGrow: 0 }}
+              contentContainerStyle={{ gap: 16, borderColor: 'red', borderWidth: 1 }}  // Apply a gap between the items
+              columnWrapperStyle={{
+                justifyContent: 'flex-start',  // Distribute the items evenly
+              }}
+            />
+
+            <View className='mt-6 px-1 border'>
               <Text className='text-xl text-primary font-semibold'>
                 More Sections
               </Text>
@@ -92,7 +110,7 @@ export default function CreateScreen() {
                     key={index}
                     iconName={item.icon}
                     name={item.name}
-                    onPress={() => router.push(item.path as Href)}
+                    onPress={() => router.push(item.path)}
                   />
                 ))}
               </View>
