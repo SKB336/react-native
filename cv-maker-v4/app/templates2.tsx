@@ -7,6 +7,7 @@ import ButtonComponent from '~/components/ButtonComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { flagEmptyKeys } from '../utils/formatData';
+import COLORS from '~/constants/colors';
 
 
 const Template2 = () => {
@@ -127,13 +128,13 @@ const Template2 = () => {
       )})}
     </View>
     {/* </ScrollView> */}
-    <View className='absolute bottom-2 w-full py-6 px-4'>
+    <View className='absolute bottom-1 w-full py-6 px-4'>
       <ButtonComponent
         title="Generate"
         handlePress={generatePDF}
         disabled={!selectedTemplate}
         style={{
-          backgroundColor: "red"
+          backgroundColor: COLORS.primary
         }}
       />
     </View>

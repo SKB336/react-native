@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 import { useEffect, useState } from 'react';
 import COLORS from '~/constants/colors';
+import { FlatGrid } from 'react-native-super-grid';
 
 const cardData: {
   name: string;
@@ -65,7 +66,7 @@ export default function CreateScreen() {
           {/* Colored background for top 1/4 of screen */}
           <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
           
-          <View className="flex-1 p-4 z-10 ">
+          <View className="flex-1 p-1 z-10 ">
             {/* <View className='items-center '>
               <View className="flex-row flex-wrap w-full justify-start gap-4">
                 {cardData.map((item, index) => (
@@ -79,7 +80,7 @@ export default function CreateScreen() {
               </View>
             </View> */}
 
-            <FlatList
+            {/* <FlatList
               data={cardData}
               renderItem={({item}) => (
                 <CardComponent
@@ -95,15 +96,29 @@ export default function CreateScreen() {
               columnWrapperStyle={{
                 justifyContent: 'flex-start',  // Distribute the items evenly
               }}
+            /> */}
+
+            <FlatGrid
+              itemDimension={90}
+              data={cardData.slice(0, 6)}
+              spacing={10}
+              renderItem={({ item }) => (
+                <CardComponent
+                  iconName={item.icon}
+                  name={item.name}
+                  onPress={() => router.push(item.path)}
+                />
+              )}
+              style={{ flexGrow: 0 }}
             />
 
-            <View className='mt-6 px-1 border'>
+            <View className='mt-4 px-4'>
               <Text className='text-xl text-primary font-semibold'>
                 More Sections
               </Text>
             </View>
 
-            <View className='mt-6 items-center '>
+            {/* <View className='mt-6 items-center border'>
               <View className="flex-row flex-wrap w-full justify-start gap-4">
                 {cardDataExtra.map((item, index) => (
                   <CardComponent
@@ -114,7 +129,21 @@ export default function CreateScreen() {
                   />
                 ))}
               </View>
-            </View>
+            </View> */}
+
+            <FlatGrid
+              itemDimension={90}
+              data={cardDataExtra.slice(0, 6)}
+              spacing={10}
+              renderItem={({ item }) => (
+                <CardComponent
+                  iconName={item.icon}
+                  name={item.name}
+                  onPress={() => router.push(item.path)}
+                />
+              )}
+              style={{ flexGrow: 0, marginTop: 16 }}
+            />
           </View>
 
           <View className='py-6 px-4'>
