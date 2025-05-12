@@ -1,11 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { View, Text, Pressable, Image, Animated, ScrollView } from 'react-native';
+import {useEffect, useRef, useState} from 'react';
+import { View, Text, Pressable, Image, Animated } from 'react-native';
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { templates } from '../constants/templates';
 import ButtonComponent from '~/components/ButtonComponent';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { flagEmptyKeys } from '../utils/formatData';
 import COLORS from '~/constants/colors';
 
@@ -44,34 +43,22 @@ const Template2 = () => {
 
   }, [selectedTemplate, opacity, scale]); // Include opacity and scale in deps array (good practice, though useRef values don't trigger effect directly)
 
-
   let generatePDF = async () => {
     if (!selectedTemplate) return;
-  
-    console.log("Selected Template:", selectedTemplate);
 
     const template = templates.find(template => template.name === selectedTemplate);
-    // let html = template?.html ?? '';
-  
     const keys = await AsyncStorage.getAllKeys();
     const stores = await AsyncStorage.multiGet(keys);
-
-    console.log("Stores:", stores)
     
-    const data: Record<string, string> = {}; // to store key-value as object
+    const data: Record<string, string> = {};
     stores.forEach(([key, value]) => {
         if (key && value) {
         data[key] = JSON.parse(value);
         }
     });
 
-    console.log(data)
     let cleanData : any = flagEmptyKeys(data);
-    console.log("Clean Data:", cleanData)
-
     const html = template?.renderHtml(cleanData);
-  
-    console.log(html)
 
     const file = await printToFileAsync({
       html: html,
@@ -79,15 +66,11 @@ const Template2 = () => {
       width:595,
       base64: false,
     });
-  
     await shareAsync(file.uri);
   };
-  
 
   return (
     <>
-    {/* <SafeAreaView className='flex-1 border'> */}
-    {/* <ScrollView className='border'> */}
     <View className="flex-row flex-wrap justify-between p-4">
       {templates.map((template) => {
         const isSelected = selectedTemplate === template.name
@@ -127,18 +110,17 @@ const Template2 = () => {
         </Pressable>
       )})}
     </View>
-    {/* </ScrollView> */}
+
     <View className='absolute bottom-1 w-full py-6 px-4'>
       <ButtonComponent
         title="Generate"
         handlePress={generatePDF}
         disabled={!selectedTemplate}
         style={{
-          backgroundColor: COLORS.primary
+          backgroundColor: COLORS.PRIMARY
         }}
       />
     </View>
-    {/* </SafeAreaView> */}
     </>
   );
 };

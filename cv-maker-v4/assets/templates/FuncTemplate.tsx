@@ -130,5 +130,5 @@ export function FuncTemplate(data: any) {
     </body>
     </html>
     `;
-  }
+}
   

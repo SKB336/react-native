@@ -167,7 +167,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
   if (loading) {
     return (
       <View className="h-full justify-center items-center">
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     )
   }

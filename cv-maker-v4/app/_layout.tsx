@@ -15,7 +15,7 @@ const RootLayout = () => {
           headerShown: true, 
           title: 'Templates', 
           headerStyle: {
-            backgroundColor: COLORS.primary,                
+            backgroundColor: COLORS.PRIMARY,                
           },
           headerTintColor: "#FFFFFF"
         }} 
@@ -26,7 +26,7 @@ const RootLayout = () => {
           headerShown: true, 
           title: 'Templates', 
           headerStyle: {
-            backgroundColor: COLORS.primary,                
+            backgroundColor: COLORS.PRIMARY,                
           },
           headerTintColor: "#FFFFFF"
         }} 

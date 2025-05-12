@@ -12,11 +12,11 @@ const TabIcon = ({icon, color, name, focused}: any) => {
       <Image
         source={icon}
         resizeMode='contain'
-        tintColor={focused ? COLORS.secondary : color}
+        tintColor={focused ? COLORS.SECONDARY : color}
         className='w-6 h-6'
       />
       {/* Ternary operator: If (focused) return 'font-psemibold' else 'font-pregular' */}
-      <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: focused ? COLORS.secondary : color}}>
+      <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: focused ? COLORS.SECONDARY : color}}>
         {name}
       </Text>
     </View>
@@ -109,7 +109,7 @@ const TabsLayout = () => {
         options={{
           title: "Profile",
           headerStyle: {
-            backgroundColor: COLORS.primary,
+            backgroundColor: COLORS.PRIMARY,
           },
           headerTintColor: "#FFFFFF",
           tabBarStyle: {

@@ -10,7 +10,7 @@ const FormsLayout = () => {
         options={{ 
           headerShown: true, 
           title: 'Personal Information', 
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.PRIMARY },
           headerTintColor: "#FFFFFF"
         }} 
       />
@@ -20,7 +20,7 @@ const FormsLayout = () => {
         options={{ 
           headerShown: true, 
           title: 'Education', 
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.PRIMARY },
           headerTintColor: "#FFFFFF"
         }} 
       />
@@ -30,7 +30,7 @@ const FormsLayout = () => {
         options={{ 
           headerShown: true, 
           title: 'Experience', 
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.PRIMARY },
           headerTintColor: "#FFFFFF"
         }} 
       />
@@ -40,7 +40,7 @@ const FormsLayout = () => {
         options={{ 
           headerShown: true, 
           title: 'Skills', 
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.PRIMARY },
           headerTintColor: "#FFFFFF"
         }} 
       />
@@ -50,7 +50,7 @@ const FormsLayout = () => {
         options={{ 
           headerShown: true, 
           title: 'Objective', 
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.PRIMARY },
           headerTintColor: "#FFFFFF"
         }} 
       />
@@ -60,7 +60,7 @@ const FormsLayout = () => {
         options={{ 
           headerShown: true, 
           title: 'Reference', 
-          headerStyle: { backgroundColor: COLORS.primary },
+          headerStyle: { backgroundColor: COLORS.PRIMARY },
           headerTintColor: "#FFFFFF"
         }} 
       />

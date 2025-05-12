@@ -1,14 +1,17 @@
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
-import CardComponent from '~/components/CardComponent';
-import icons from '~/constants/icons';
-import { Href, Route, router } from 'expo-router';
-import { FontAwesome } from '@expo/vector-icons';
-import ButtonComponent from '~/components/ButtonComponent';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Font from 'expo-font';
 import { useEffect, useState } from 'react';
-import COLORS from '~/constants/colors';
+import { View, Text, ActivityIndicator } from 'react-native';
+
+import * as Font from 'expo-font';
+import { Route, router } from 'expo-router';
+import { FontAwesome } from '@expo/vector-icons';
+
 import { FlatGrid } from 'react-native-super-grid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import CardComponent from '~/components/CardComponent';
+import ButtonComponent from '~/components/ButtonComponent';
+import COLORS from '~/constants/colors';
+
 
 const cardData: {
   name: string;
@@ -20,7 +23,7 @@ const cardData: {
   { name: 'Experience', icon: "briefcase",        path: "/(forms)/experience" },
   { name: 'Skills',     icon: "star",             path: "/(forms)/skill" },
   { name: 'Objective',  icon: "bullseye",         path: "/(forms)/objective" },
-  // { name: 'Reference',  icon: "paperclip",        path: "/(forms)/reference" },
+  { name: 'Reference',  icon: "paperclip",        path: "/(forms)/reference" },
 ];
 
 const cardDataExtra: {
@@ -67,37 +70,6 @@ export default function CreateScreen() {
           <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
           
           <View className="flex-1 p-1 z-10 ">
-            {/* <View className='items-center '>
-              <View className="flex-row flex-wrap w-full justify-start gap-4">
-                {cardData.map((item, index) => (
-                  <CardComponent
-                    key={index}
-                    iconName={item.icon}
-                    name={item.name}
-                    onPress={() => router.push(item.path)}
-                  />
-                ))}
-              </View>
-            </View> */}
-
-            {/* <FlatList
-              data={cardData}
-              renderItem={({item}) => (
-                <CardComponent
-                  iconName={item.icon}
-                  name={item.name}
-                  onPress={() => router.push(item.path)}
-                />
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              numColumns={3}  // Set the number of columns to 3
-              style={{ borderColor: 'red', borderWidth: 1, flexGrow: 0 }}
-              contentContainerStyle={{ gap: 16, borderColor: 'red', borderWidth: 1 }}  // Apply a gap between the items
-              columnWrapperStyle={{
-                justifyContent: 'flex-start',  // Distribute the items evenly
-              }}
-            /> */}
-
             <FlatGrid
               itemDimension={90}
               data={cardData.slice(0, 6)}
@@ -117,19 +89,6 @@ export default function CreateScreen() {
                 More Sections
               </Text>
             </View>
-
-            {/* <View className='mt-6 items-center border'>
-              <View className="flex-row flex-wrap w-full justify-start gap-4">
-                {cardDataExtra.map((item, index) => (
-                  <CardComponent
-                    key={index}
-                    iconName={item.icon}
-                    name={item.name}
-                    onPress={() => router.push(item.path)}
-                  />
-                ))}
-              </View>
-            </View> */}
 
             <FlatGrid
               itemDimension={90}
@@ -155,7 +114,7 @@ export default function CreateScreen() {
         </View>
       ) : (
         <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color={COLORS.primary} />
+          <ActivityIndicator size="large" color={COLORS.PRIMARY} />
         </View>
       )}
     </>

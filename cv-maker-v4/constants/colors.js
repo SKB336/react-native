@@ -1,9 +1,9 @@
 const COLORS = {
-    primary: '#1A5555', 
-    primary_100: "#F0FC30",
-    secondary: '#FE4804',
-    white: '#FFFFFF',
-    yellow_special: '#FFF466',
+    PRIMARY: '#1A5555', 
+    PRIMARY_100: "#F0FC30",
+    SECONDARY: '#FE4804',
+    WHITE: '#FFFFFF',
+    YELLOW_SPECIAL: '#FFF466',
 }
 
 export default COLORS;
