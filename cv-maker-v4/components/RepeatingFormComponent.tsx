@@ -1,12 +1,18 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Button, Pressable, ActivityIndicator } from 'react-native';
-import ButtonComponent from './ButtonComponent';
+import { 
+  View, Text, TextInput, TouchableOpacity, ScrollView, 
+  KeyboardAvoidingView, Pressable, ActivityIndicator 
+} from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { FontAwesome6 } from '@expo/vector-icons'
-import { v4 as uuidv4 } from 'uuid';
+
+import ButtonComponent from './ButtonComponent';
 import { FormField } from '~/types/forms';
 import COLORS from '~/constants/colors';
-import { useNavigation } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+// import { useNavigation } from 'expo-router';
 
 
 interface RepeatingFormComponentProps {
@@ -29,13 +35,13 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
   const [formEntries, setFormEntries] = useState<Record<string, any>[]>(initialValues);
   const [errorsList, setErrorsList] = useState<Record<string, string | null>[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: !loading,
-    });
-  }, [navigation, loading]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerShown: !loading,
+  //   });
+  // }, [navigation, loading]);
 
   useEffect(() => {
     const loadFormValues = async () => {
@@ -178,6 +184,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
     //   className="flex-1"
     // >
       <ScrollView className='' keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding:16 }}>
+        <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
         {/* <View className="p-4"> */}
           {formEntries.map((_, index) => (
             <View key={index} className='mb-6 rounded-md overflow-hidden'>
@@ -220,6 +227,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
             <ButtonComponent title={submitLabel} handlePress={handleSubmit} />
           </View>
         {/* </View> */}
+        </SafeAreaView>
       </ScrollView>
     // </KeyboardAvoidingView>
   );

@@ -12,6 +12,11 @@ import CardComponent from '~/components/CardComponent';
 import ButtonComponent from '~/components/ButtonComponent';
 import COLORS from '~/constants/colors';
 
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+
 
 const cardData: {
   name: string;
@@ -36,6 +41,7 @@ const cardDataExtra: {
 
 export default function CreateScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     async function loadFonts() {
@@ -105,7 +111,7 @@ export default function CreateScreen() {
             />
           </View>
 
-          <View className='py-6 px-4'>
+          <View className='ps-6 px-4' style={{ marginBottom: insets.bottom }}>
             <ButtonComponent
               title="Next"
               handlePress={onNext}

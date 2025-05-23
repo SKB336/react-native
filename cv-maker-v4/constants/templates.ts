@@ -9,7 +9,7 @@ import { FuncTemplate } from "../assets/templates/FuncTemplate";
 
 import BasicTemplateThumbnail from "../assets/images/templates/BasicTemplate.png";
 import ModernTemplateThumbnail from "../assets/images/templates/ModernTemplate.jpg";
-import FuncTemplateThumbnail from "../assets/images/templates/FuncTemplate.png";
+import FuncTemplateThumbnail from "../assets/images/templates/FuncTemplate.jpg";
 
 interface Template {
   name: string;

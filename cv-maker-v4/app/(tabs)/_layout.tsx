@@ -5,6 +5,8 @@ import { icons } from '../../constants'
 import COLORS from '../../constants/colors'
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform } from 'react-native';
 
 const TabIcon = ({icon, color, name, focused}: any) => {
   return (
@@ -50,6 +52,9 @@ const CustomTabBarButton = ({ children, onPress }: PressableProps & { children: 
 }
 
 const TabsLayout = () => {
+  const insets = useSafeAreaInsets();
+  const bottomPadding = Platform.OS === 'android' ? insets.bottom : 25; // Add extra padding for the tab bar height and spacing
+
   const resetStorage = async ({ keys }: { keys?: string[] | null }) => {
     try {
       if (Array.isArray(keys) && 0 < keys.length) {
@@ -73,8 +78,9 @@ const TabsLayout = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           position: 'absolute',
-          bottom: 25,
+          bottom: bottomPadding,
           marginHorizontal: 20,
+          paddingBottom: 0,
           // elevation: 0,
           backgroundColor: '#ffffff',
           borderTopColor: 'transparent',

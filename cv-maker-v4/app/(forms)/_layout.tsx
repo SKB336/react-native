@@ -1,9 +1,11 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 import COLORS from '~/constants/colors'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FormsLayout = () => {
   return (
+    // <SafeAreaView className='flex-1'>
     <Stack>
       <Stack.Screen 
         name='personal' 
@@ -65,6 +67,7 @@ const FormsLayout = () => {
         }} 
       />
     </Stack>
+    // {/* </SafeAreaView> */}
   )
 }
 

@@ -38,33 +38,18 @@ const WelcomeScreen = () => {
                         className="w-full h-60 mb-3"
                         resizeMode="cover"
                     />
-                    <Text className="text-lg font-semibold text-center text-gray-700">Create the perfect resume</Text>
-                    <Text className="text-gray-500">in just few steps</Text>
+                    <Text className="text-lg font-semibold text-center text-gray-700">Professional Resume</Text>
+                    <Text className="text-gray-500">in just a few steps</Text>
                 </View>
                 <View>
-                    <Text className="text-center font-semibold text-2xl text-black-500">Welcome to ---</Text>
-                    <Text className="text-center text-gray-500">terms and conditions</Text>
+                    <Text className="text-center font-semibold text-2xl text-black-500">Welcome to ProFile</Text>
+                    <Text className="text-center text-gray-500">Terms and conditions</Text>
                 </View>
-                <ButtonComponent title="Create your Resume" 
-                            handlePress={() => {router.replace("/(tabs)/home")}} 
-                            containerStyles='w-[70%]' 
-                            textStyles='text-secondary' />
-                <Pressable className="w-[120px] h-[120px] rounded-lg overflow-hidden items-center justify-center" onPress={()=>{}}>
-      <Svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 120 120"
-        className="absolute"
-      >
-        <Rect fill="#00bb77" width="120" height="120" />
-        <Polygon
-          fill="#000"
-          fillOpacity="0.1"
-          points="120 0 120 60 90 30 60 0 0 0 0 0 60 60 0 120 60 120 90 90 120 60 120 0"
-        />
-      </Svg>
-      <Text className="text-white font-bold">Click Me</Text>
-    </Pressable>
+                <ButtonComponent 
+                    title="Create your Resume" 
+                    handlePress={() => {router.replace("/(tabs)/home")}} 
+                    containerStyles='w-[70%]' 
+                    textStyles='text-secondary' />
             </View>
         </View>
     );

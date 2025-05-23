@@ -4,6 +4,7 @@ import ButtonComponent from './ButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FormField } from '~/types/forms';
 import * as ImagePicker from 'expo-image-picker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 interface FormComponentProps {
@@ -187,6 +188,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
       className="flex-1"
     >
       <ScrollView className="flex-1 bg-gray-50">
+      <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
         <View className='py-6 px-4'>
           {fields.map((field) => (
             <View key={field.name} className="mb-4">
@@ -205,6 +207,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
               handlePress={handleSubmit}
           />
         </View>
+      </SafeAreaView>
       </ScrollView>
     </KeyboardAvoidingView>
   );

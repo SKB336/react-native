@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import FormComponent from '../../components/FormComponent';
 import { FormField  } from '../../types/forms';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PersonalForm = () => {
   const handleSubmit = (values: any) => {
@@ -21,6 +22,7 @@ const PersonalForm = () => {
   ];
 
   return (
+    
     <FormComponent
       title="Personal Information"
       fields={formFields}
@@ -28,6 +30,7 @@ const PersonalForm = () => {
       submitLabel="Save"
       storageKey="personal_form"
     />
+
   );
 };
 

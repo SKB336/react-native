@@ -1,11 +1,15 @@
 import {useEffect, useRef, useState} from 'react';
 import { View, Text, Pressable, Image, Animated } from 'react-native';
+
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { templates } from '../constants/templates';
+
+import { templates } from '~/constants/templates';
 import ButtonComponent from '~/components/ButtonComponent';
-import { flagEmptyKeys } from '../utils/formatData';
+import { flagEmptyKeys } from '~/utils/formatData';
 import COLORS from '~/constants/colors';
 
 
@@ -13,6 +17,7 @@ const Template2 = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.8)).current;
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     // Only run the animation if a template is selected
@@ -41,7 +46,9 @@ const Template2 = () => {
     // you would add an `else` block here to animate opacity to 0 and scale to 0.8.
     // However, the current logic doesn't seem to support deselecting back to null.
 
-  }, [selectedTemplate, opacity, scale]); // Include opacity and scale in deps array (good practice, though useRef values don't trigger effect directly)
+    // Include opacity and scale in deps array (good practice, 
+    // though useRef values don't trigger effect directly)
+  }, [selectedTemplate, opacity, scale]); 
 
   let generatePDF = async () => {
     if (!selectedTemplate) return;
@@ -111,7 +118,10 @@ const Template2 = () => {
       )})}
     </View>
 
-    <View className='absolute bottom-1 w-full py-6 px-4'>
+    <View 
+      className='absolute bottom-1 w-full ps-6 px-4' 
+      style={{ marginBottom: insets.bottom }}
+    >
       <ButtonComponent
         title="Generate"
         handlePress={generatePDF}
