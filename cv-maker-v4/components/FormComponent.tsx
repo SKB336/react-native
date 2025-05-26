@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import ButtonComponent from './ButtonComponent';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FormField } from '~/types/forms';
+import { 
+  View, Text, TextInput, 
+  TouchableOpacity, Image, ScrollView, 
+  KeyboardAvoidingView, Platform, ActivityIndicator 
+} from 'react-native';
+
 import * as ImagePicker from 'expo-image-picker';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { FormField } from '~/types/forms';
+import ButtonComponent from './ButtonComponent';
+import { API_KEY, API_MODEL, API_ENDPOINT } from '~/constants/api';
 
 interface FormComponentProps {
   title?: string;
@@ -14,8 +21,9 @@ interface FormComponentProps {
   initialValues?: Record<string, any>;
   submitLabel?: string;
   storageKey?: string;
+  aiApiKey?: string;
+  aiApiEndpoint?: string;
 }
-
 
 const FormComponent: React.FC<FormComponentProps> = ({
   title = 'Form',
@@ -23,9 +31,10 @@ const FormComponent: React.FC<FormComponentProps> = ({
   onSubmit,
   initialValues = {},
   submitLabel = 'Submit',
-  storageKey = "default_key"
+  storageKey = "default_key",
+  aiApiKey = API_KEY,
+  aiApiEndpoint = API_ENDPOINT
 }) => {
-  // console.log(AsyncStorage.getItem(storageKey))
   const [formValues, setFormValues] = useState<Record<string, any>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -79,16 +88,13 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
   const handleSubmit = (): void => {
     if (validateForm()) {
-      // setIsSubmitting(true);
       onSubmit && onSubmit(formValues);
-      setSubmissionSuccessful(true); // Indicate successful submission
-      // setIsSubmitting(false);
+      setSubmissionSuccessful(true);
     }
   };
 
   useEffect(() => {
     if (submissionSuccessful) {
-      // Save value whenever inputValue changes
       const saveValue = async () => {
         try {
           await AsyncStorage.setItem(storageKey, JSON.stringify(formValues));
@@ -100,23 +106,113 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
       saveValue();
     }
-  }, [submissionSuccessful, formValues, storageKey]); // Re-run when inputValue changes
+  }, [submissionSuccessful, formValues, storageKey]);
+
+  // AI suggestion function - now properly implemented
+  const fetchAISuggestion = async (prompt: string, fieldName: string): Promise<string> => {
+    if (!aiApiKey) {
+      throw new Error('AI API key is required for suggestions');
+    }
+
+    try {
+      // Get context from other form fields for better suggestions
+      const contextData = Object.entries(formValues)
+        .filter(([key]) => key !== fieldName)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(', ');
+
+      const contextPrompt = contextData 
+        ? `Based on this context: ${contextData}. ${prompt}` 
+        : prompt;
+
+      const response = await fetch(aiApiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${aiApiKey}`,
+        },
+        body: JSON.stringify({
+          model: API_MODEL,
+          messages: [
+            {
+              role: 'user',
+              content: contextPrompt
+            }
+          ],
+          max_tokens: 200,
+          temperature: 0.7,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI API request failed: ${JSON.stringify(await response.text())}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content?.trim() || 'No suggestion available';
+    } catch (error) {
+      console.error('AI Suggestion error:', error);
+      throw error;
+    }
+  };
 
   const renderField = (field: FormField) => {
-    const { name, label, type = 'text', placeholder, required, options } = field;
+    const { name, label, type = 'text', placeholder, required, options, ai } = field;
+    const [loadingSuggestion, setLoadingSuggestion] = useState(false);
+
+    const suggestWithAI = async () => {
+      if (!ai?.prompt) return;
+      setLoadingSuggestion(true);
+      try {
+        const suggestion = await fetchAISuggestion(ai.prompt, name);
+        handleChange(name, suggestion);
+      } catch (err) {
+        console.error('AI Suggestion error:', err);
+        // You might want to show an error message to the user here
+        setErrors(prev => ({
+          ...prev,
+          [name]: 'Failed to get AI suggestion. Please try again.'
+        }));
+      }
+      setLoadingSuggestion(false);
+    };
+
+    const showAISuggestionButton = ai?.enabled && ['text', 'textarea'].includes(type) && aiApiKey;
+    console.log("showAISuggestionButton", showAISuggestionButton, ai?.enabled, ['text', 'textarea'].includes(type), aiApiKey)
     
     switch (type) {
       case 'textarea':
         return (
-          <TextInput
-            key={name}
-            multiline
-            numberOfLines={4}
-            value={formValues[name] || ''}
-            onChangeText={(text) => handleChange(name, text)}
-            placeholder={placeholder || ''}
-            className="w-full p-4 mb-4 border border-gray-300 rounded-md bg-white text-gray-800"
-          />
+          <View key={name}>
+            <TextInput
+              multiline
+              numberOfLines={4}
+              value={formValues[name] || ''}
+              onChangeText={(text) => handleChange(name, text)}
+              placeholder={placeholder || ''}
+              className="w-full p-4 mb-2 border border-gray-300 rounded-md bg-white text-gray-800"
+            />
+            {showAISuggestionButton && (
+              <TouchableOpacity
+                onPress={suggestWithAI}
+                disabled={loadingSuggestion}
+                className={`flex-row items-center justify-center p-2 mb-2 rounded-md ${
+                  loadingSuggestion 
+                    ? 'bg-gray-300' 
+                    : 'bg-blue-500'
+                }`}
+              >
+                {loadingSuggestion ? (
+                  <>
+                    <ActivityIndicator size="small" color="white" className="mr-2" />
+                    <Text className="text-white text-sm">Getting AI suggestion...</Text>
+                  </>
+                ) : (
+                  <Text className="text-white text-sm">✨ Get AI Suggestion</Text>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
         );
       case 'select':
         return (
@@ -154,30 +250,51 @@ const FormComponent: React.FC<FormComponentProps> = ({
             className="w-full mb-4"
           >
             <View className="w-full p-4 border border-gray-300 rounded-md bg-white items-center justify-center">
-        {formValues[name] ? (
-          <Image
-            source={{ uri: formValues[name] }}
-            className="w-full aspect-square rounded-md"
-            resizeMode="cover"
-          />
-        ) : (
-          <Text className="text-gray-500">Upload Image</Text>
-        )}
-      </View>
+              {formValues[name] ? (
+                <Image
+                  source={{ uri: formValues[name] }}
+                  className="w-full aspect-square rounded-md"
+                  resizeMode="cover"
+                />
+              ) : (
+                <Text className="text-gray-500">Upload Image</Text>
+              )}
+            </View>
           </TouchableOpacity>
         );
       case 'text':
       default:
         return (
-          <TextInput
-            key={name}
-            value={formValues[name] || ''}
-            onChangeText={(text) => handleChange(name, text)}
-            placeholder={placeholder || ''}
-            secureTextEntry={type === 'password'}
-            keyboardType={type === 'email' ? 'email-address' : type === 'number' ? 'numeric' : 'default'}
-            className="w-full p-4 mb-4 border border-gray-300 rounded-md bg-white text-gray-800"
-          />
+          <View key={name}>
+            <TextInput
+              value={formValues[name] || ''}
+              onChangeText={(text) => handleChange(name, text)}
+              placeholder={placeholder || ''}
+              secureTextEntry={type === 'password'}
+              keyboardType={type === 'email' ? 'email-address' : type === 'number' ? 'numeric' : 'default'}
+              className="w-full p-4 mb-2 border border-gray-300 rounded-md bg-white text-gray-800"
+            />
+            {showAISuggestionButton && (
+              <TouchableOpacity
+                onPress={suggestWithAI}
+                disabled={loadingSuggestion}
+                className={`flex-row items-center justify-center p-2 mb-2 rounded-md ${
+                  loadingSuggestion 
+                    ? 'bg-gray-300' 
+                    : 'bg-blue-500'
+                }`}
+              >
+                {loadingSuggestion ? (
+                  <>
+                    <ActivityIndicator size="small" color="white" className="mr-2" />
+                    <Text className="text-white text-sm">Getting AI suggestion...</Text>
+                  </>
+                ) : (
+                  <Text className="text-white text-sm">✨ Get AI Suggestion</Text>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
         );
     }
   };
@@ -188,26 +305,26 @@ const FormComponent: React.FC<FormComponentProps> = ({
       className="flex-1"
     >
       <ScrollView className="flex-1 bg-gray-50">
-      <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
-        <View className='py-6 px-4'>
-          {fields.map((field) => (
-            <View key={field.name} className="mb-4">
-              <Text className="mb-2 text-sm font-medium text-gray-700">
-                {field.label} {field.required && <Text className="text-red-500">*</Text>}
-              </Text>
-              {renderField(field)}
-              {errors[field.name] && (
-                <Text className="mt-1 text-sm text-red-500">{errors[field.name]}</Text>
-              )}
-            </View>
-          ))}
+        <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
+          <View className='py-6 px-4'>
+            {fields.map((field) => (
+              <View key={field.name} className="mb-4">
+                <Text className="mb-2 text-sm font-medium text-gray-700">
+                  {field.label} {field.required && <Text className="text-red-500">*</Text>}
+                </Text>
+                {renderField(field)}
+                {errors[field.name] && (
+                  <Text className="mt-1 text-sm text-red-500">{errors[field.name]}</Text>
+                )}
+              </View>
+            ))}
 
-          <ButtonComponent 
-              title={submitLabel} 
-              handlePress={handleSubmit}
-          />
-        </View>
-      </SafeAreaView>
+            <ButtonComponent 
+                title={submitLabel} 
+                handlePress={handleSubmit}
+            />
+          </View>
+        </SafeAreaView>
       </ScrollView>
     </KeyboardAvoidingView>
   );

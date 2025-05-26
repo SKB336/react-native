@@ -12,4 +12,10 @@ export interface FormField {
     placeholder?: string;
     required?: boolean;
     options?: FieldOption[];
+    ai?: {
+        enabled?: boolean;
+        apiKey?: string;
+        apiEndpoint?: string;
+        prompt?: string;
+    };
 }

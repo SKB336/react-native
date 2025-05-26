@@ -14,6 +14,7 @@ import COLORS from '~/constants/colors';
 
 import {
   SafeAreaProvider,
+  SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
@@ -69,7 +70,7 @@ export default function CreateScreen() {
   };  
 
   return (
-    <>
+    <SafeAreaView className='flex-1' edges={['right', 'left', 'bottom']}>
       {fontsLoaded ? (
         <View className="flex-1 relative ">
           {/* Colored background for top 1/4 of screen */}
@@ -111,7 +112,7 @@ export default function CreateScreen() {
             />
           </View>
 
-          <View className='ps-6 px-4' style={{ marginBottom: insets.bottom }}>
+          <View className='ps-6 px-4'>
             <ButtonComponent
               title="Next"
               handlePress={onNext}
@@ -123,6 +124,6 @@ export default function CreateScreen() {
           <ActivityIndicator size="large" color={COLORS.PRIMARY} />
         </View>
       )}
-    </>
+    </SafeAreaView>
   );
 }

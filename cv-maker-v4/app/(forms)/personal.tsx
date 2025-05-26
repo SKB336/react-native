@@ -12,6 +12,7 @@ const PersonalForm = () => {
   // Types for the entire form fields array
   const formFields: FormField[] = [
     { name: 'fullName', label: 'Full Name', required: true },
+    { name: 'jobTitle', label: 'Job Title', required: false },
     { name: 'address', label: 'Address', required: false },
     { name: 'email', label: 'Email Address', type: 'email', required: true },
     { name: 'phone', label: 'Phone Number', type: 'number', required: true },
