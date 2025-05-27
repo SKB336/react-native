@@ -1,18 +1,19 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, Text, TextInput, TouchableOpacity, ScrollView, 
   KeyboardAvoidingView, Pressable, ActivityIndicator 
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FontAwesome6 } from '@expo/vector-icons'
 
+import { API_KEY } from '~/constants/api';
+import COLORS from '~/constants/colors';
 import ButtonComponent from './ButtonComponent';
 import { FormField } from '~/types/forms';
-import COLORS from '~/constants/colors';
-import { SafeAreaView } from 'react-native-safe-area-context';
-// import { useNavigation } from 'expo-router';
+import { fetchAISuggestion } from '~/utils/fetchAPI';
 
 
 interface RepeatingFormComponentProps {
@@ -22,6 +23,7 @@ interface RepeatingFormComponentProps {
   initialValues?: Record<string, any>[];
   submitLabel?: string;
   storageKey?: string;
+  aiApiKey?: string;
 }
 
 const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
@@ -30,18 +32,13 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
   onSubmit,
   initialValues = [{}],
   submitLabel = 'Submit',
-  storageKey = 'default_key'
+  storageKey = 'default_key',
+  aiApiKey = API_KEY
 }) => {
   const [formEntries, setFormEntries] = useState<Record<string, any>[]>(initialValues);
   const [errorsList, setErrorsList] = useState<Record<string, string | null>[]>([]);
   const [loading, setLoading] = useState(true);
-  // const navigation = useNavigation();
-
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: !loading,
-  //   });
-  // }, [navigation, loading]);
+  const [loadingSuggestion, setLoadingSuggestion] = useState(false);
 
   useEffect(() => {
     const loadFormValues = async () => {
@@ -117,13 +114,41 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
   };
 
   const renderField = (field: FormField, formIndex: number) => {
-    const { name, label, type = 'text', placeholder, options } = field;
+    const { name, label, type = 'text', placeholder, options, ai } = field;
     const value = formEntries[formIndex]?.[name] || '';
     const error = errorsList[formIndex]?.[name];
+
+    const suggestWithAI = async () => {
+      if (!ai?.prompt) return;
+      
+      let localizedPrompt = ai.prompt;
+      if (ai.contextKey) {
+        for (const key of ai.contextKey) {
+          localizedPrompt = localizedPrompt.replace(`{{${key}}}`, formEntries[formIndex][key]);
+        }
+      }
+      
+      setLoadingSuggestion(true);
+      try {
+        const suggestion = await fetchAISuggestion(localizedPrompt);
+        handleChange(formIndex, name, suggestion);
+      } catch (err) {
+        console.error('AI Suggestion error:', err);
+        // Might want to show an error message to the user here
+        setErrorsList(prev => ({
+          ...prev,
+          [name]: 'Failed to get AI suggestion. Please try again.'
+        }));
+      }
+      setLoadingSuggestion(false);
+    };
+
+    const showAISuggestionButton = ai?.enabled && ['text', 'textarea'].includes(type) && aiApiKey;
 
     switch (type) {
       case 'textarea':
         return (
+          <View>
           <TextInput
             multiline
             numberOfLines={4}
@@ -132,6 +157,25 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
             placeholder={placeholder || ''}
             className="w-full p-4 mb-2 border border-gray-300 rounded-md bg-white text-gray-800"
           />
+            {showAISuggestionButton && (
+              <TouchableOpacity
+                onPress={suggestWithAI}
+                disabled={loadingSuggestion}
+                className={`flex-row items-center justify-center p-2 mb-2 rounded-md ${
+                  loadingSuggestion ? 'bg-gray-300' : 'bg-blue-500'
+                }`}
+              >
+                {loadingSuggestion ? (
+                  <>
+                    <ActivityIndicator size="small" color="white" className="mr-2" />
+                    <Text className="text-white text-sm">Getting AI suggestion...</Text>
+                  </>
+                ) : (
+                  <Text className="text-white text-sm">✨ Get AI Suggestion</Text>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
         );
       case 'select':
         return (
@@ -151,6 +195,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
         );
       default:
         return (
+          <View>
           <TextInput
             value={value}
             onChangeText={(text) => handleChange(formIndex, name, text)}
@@ -159,16 +204,28 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
             keyboardType={type === 'email' ? 'email-address' : type === 'number' ? 'numeric' : 'default'}
             className="w-full p-4 mb-2 border border-gray-300 rounded-md bg-white text-gray-800"
           />
+          {showAISuggestionButton && (
+            <TouchableOpacity
+              onPress={suggestWithAI}
+              disabled={loadingSuggestion}
+              className={`flex-row items-center justify-center p-2 mb-2 rounded-md ${
+                loadingSuggestion ? 'bg-gray-300' : 'bg-blue-500'
+              }`}
+            >
+              {loadingSuggestion ? (
+                <>
+                  <ActivityIndicator size="small" color="white" className="mr-2" />
+                  <Text className="text-white text-sm">Getting AI suggestion...</Text>
+                </>
+              ) : (
+                <Text className="text-white text-sm">✨ Get AI Suggestion</Text>
+              )}
+            </TouchableOpacity>
+          )}
+          </View>
         );
     }
   };
-
-  // useNavigationOptions({
-  //   headerShown: !loading,
-  // });
-  // navigation.setOptions({
-  //   headerShown: !loading,
-  // });
   
   if (loading) {
     return (
@@ -185,11 +242,8 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
     // >
       <ScrollView className='' keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding:16 }}>
         <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
-        {/* <View className="p-4"> */}
           {formEntries.map((_, index) => (
             <View key={index} className='mb-6 rounded-md overflow-hidden'>
-            {/* <View className="bg-white"> */}
-              {/* <Text className="text-lg font-semibold mb-2">{title} {index + 1}</Text> */}
               <View className="flex-row items-center justify-between px-2 bg-primary">
                 <Text className="text-lg font-semibold text-white">{title} {index + 1}</Text>
                 {index > 0 && (
@@ -198,7 +252,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
                   </Pressable>
                 )}
               </View>
-              {/* </View> */}
+
               <View className="bg-white p-4">
                 {fields.map((field) => (
                   <View key={field.name} className="mb-2">
@@ -226,7 +280,6 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
           <View className="mt-4">
             <ButtonComponent title={submitLabel} handlePress={handleSubmit} />
           </View>
-        {/* </View> */}
         </SafeAreaView>
       </ScrollView>
     // </KeyboardAvoidingView>

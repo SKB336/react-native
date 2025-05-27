@@ -10,17 +10,6 @@ const RootLayout = () => {
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
       <Stack.Screen name='(forms)' options={{ header: () => null, headerShown: false }} />
       <Stack.Screen 
-        name='templates' 
-        options={{ 
-          headerShown: true, 
-          title: 'Templates', 
-          headerStyle: {
-            backgroundColor: COLORS.PRIMARY,                
-          },
-          headerTintColor: "#FFFFFF"
-        }} 
-      />
-      <Stack.Screen 
         name='templates2' 
         options={{ 
           headerShown: true, 

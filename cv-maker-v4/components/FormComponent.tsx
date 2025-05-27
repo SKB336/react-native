@@ -12,7 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FormField } from '~/types/forms';
 import ButtonComponent from './ButtonComponent';
-import { API_KEY, API_MODEL, API_ENDPOINT } from '~/constants/api';
+import { API_KEY } from '~/constants/api';
+import { fetchAISuggestion } from '~/utils/fetchAPI';
+
 
 interface FormComponentProps {
   title?: string;
@@ -22,7 +24,6 @@ interface FormComponentProps {
   submitLabel?: string;
   storageKey?: string;
   aiApiKey?: string;
-  aiApiEndpoint?: string;
 }
 
 const FormComponent: React.FC<FormComponentProps> = ({
@@ -33,12 +34,12 @@ const FormComponent: React.FC<FormComponentProps> = ({
   submitLabel = 'Submit',
   storageKey = "default_key",
   aiApiKey = API_KEY,
-  aiApiEndpoint = API_ENDPOINT
 }) => {
   const [formValues, setFormValues] = useState<Record<string, any>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submissionSuccessful, setSubmissionSuccessful] = useState<boolean>(false);
+  const [loadingSuggestion, setLoadingSuggestion] = useState(false);
 
   useEffect(() => {
     const loadFormValues = async () => {
@@ -108,63 +109,14 @@ const FormComponent: React.FC<FormComponentProps> = ({
     }
   }, [submissionSuccessful, formValues, storageKey]);
 
-  // AI suggestion function - now properly implemented
-  const fetchAISuggestion = async (prompt: string, fieldName: string): Promise<string> => {
-    if (!aiApiKey) {
-      throw new Error('AI API key is required for suggestions');
-    }
-
-    try {
-      // Get context from other form fields for better suggestions
-      const contextData = Object.entries(formValues)
-        .filter(([key]) => key !== fieldName)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(', ');
-
-      const contextPrompt = contextData 
-        ? `Based on this context: ${contextData}. ${prompt}` 
-        : prompt;
-
-      const response = await fetch(aiApiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${aiApiKey}`,
-        },
-        body: JSON.stringify({
-          model: API_MODEL,
-          messages: [
-            {
-              role: 'user',
-              content: contextPrompt
-            }
-          ],
-          max_tokens: 200,
-          temperature: 0.7,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`AI API request failed: ${JSON.stringify(await response.text())}`);
-      }
-
-      const data = await response.json();
-      return data.choices[0]?.message?.content?.trim() || 'No suggestion available';
-    } catch (error) {
-      console.error('AI Suggestion error:', error);
-      throw error;
-    }
-  };
-
   const renderField = (field: FormField) => {
     const { name, label, type = 'text', placeholder, required, options, ai } = field;
-    const [loadingSuggestion, setLoadingSuggestion] = useState(false);
 
     const suggestWithAI = async () => {
       if (!ai?.prompt) return;
       setLoadingSuggestion(true);
       try {
-        const suggestion = await fetchAISuggestion(ai.prompt, name);
+        const suggestion = await fetchAISuggestion(ai.prompt);
         handleChange(name, suggestion);
       } catch (err) {
         console.error('AI Suggestion error:', err);
@@ -178,7 +130,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
     };
 
     const showAISuggestionButton = ai?.enabled && ['text', 'textarea'].includes(type) && aiApiKey;
-    console.log("showAISuggestionButton", showAISuggestionButton, ai?.enabled, ['text', 'textarea'].includes(type), aiApiKey)
     
     switch (type) {
       case 'textarea':
@@ -238,7 +189,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
             key={name}
             onPress={async () => {
               const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                mediaTypes: ['images'],
                 allowsEditing: true,
                 aspect: [1, 1],
                 quality: 1,
