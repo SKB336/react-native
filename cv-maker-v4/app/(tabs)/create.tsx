@@ -57,6 +57,12 @@ export default function CreateScreen() {
 
   const onNext = async () => {
     try {
+      const personalFormData = await AsyncStorage.getItem('personal_form');
+      if (!personalFormData) {
+        alert('Please fill in the personal form first');
+        return;
+      }
+
       router.push('/templates2' as Route)
       const keys = await AsyncStorage.getAllKeys();
       const keyValuePairs = await AsyncStorage.multiGet(keys);
