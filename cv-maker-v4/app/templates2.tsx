@@ -12,6 +12,8 @@ import ButtonComponent from '~/components/ButtonComponent';
 import { flagEmptyKeys } from '~/utils/formatData';
 import COLORS from '~/constants/colors';
 
+import { savePdfToFolder } from '~/utils/savePdf';
+
 
 const Template2 = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
@@ -67,13 +69,17 @@ const Template2 = () => {
     let cleanData : any = flagEmptyKeys(data);
     const html = template?.renderHtml(cleanData);
 
-    const file = await printToFileAsync({
-      html: html,
-      height:842, 
-      width:595,
+    // Printing
+    const personalForm = await AsyncStorage.getItem('personal_form')
+    const fullName = JSON.parse(personalForm || '{}').fullName;
+
+    await savePdfToFolder({
+      html: html, 
+      height: 842, 
+      width: 595, 
       base64: false,
+      fileName: `${fullName}`
     });
-    await shareAsync(file.uri);
   };
 
   return (

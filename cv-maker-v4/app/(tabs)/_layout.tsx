@@ -93,8 +93,7 @@ const TabsLayout = () => {
       <Tabs.Screen 
         name="home" 
         options={{ 
-          title: 'Home', 
-          headerShown: false,
+          title: 'ProFile', 
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               icon={icons.menu}
@@ -107,6 +106,11 @@ const TabsLayout = () => {
             width: '100%',
             height: '100%'
           },
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: "#FFFFFF",
         }} 
       />
       
@@ -166,7 +170,6 @@ const TabsLayout = () => {
         name="pdfs" 
         options={{ 
           title: 'PDFs', 
-          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               icon={icons.file}
@@ -179,6 +182,11 @@ const TabsLayout = () => {
             width: '100%',
             height: '100%',
           },
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+          headerTintColor: "#FFFFFF",
         }} 
       />
     </Tabs>

@@ -32,7 +32,7 @@ export const templates = [
     },
     {
         name: "Modern",
-        html: ModernTemplate,
+        renderHtml: ModernTemplate,
         thumbnail: ModernTemplateThumbnail
     },
     {
