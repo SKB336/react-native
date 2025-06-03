@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { useEffect, useState, useLayoutEffect } from 'react';
+import { View, Text, ActivityIndicator, Pressable, Modal } from 'react-native';
 
 import * as Font from 'expo-font';
-import { Route, router } from 'expo-router';
+import { Route, router, useNavigation } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { FlatGrid } from 'react-native-super-grid';
@@ -12,11 +12,7 @@ import CardComponent from '~/components/CardComponent';
 import ButtonComponent from '~/components/ButtonComponent';
 import COLORS from '~/constants/colors';
 
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const cardData: {
@@ -42,7 +38,23 @@ const cardDataExtra: {
 
 export default function CreateScreen() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const insets = useSafeAreaInsets();
+  const [loading, setLoading] = useState(false);
+
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: ({  }) => (
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          className="pr-6"
+        >
+          <FontAwesome name="rotate-right" size={24} color="white" />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     async function loadFonts() {
@@ -51,7 +63,7 @@ export default function CreateScreen() {
       });
       setFontsLoaded(true);
     }
-    
+
     loadFonts();
   }, []);
 
@@ -75,12 +87,71 @@ export default function CreateScreen() {
     }
   };  
 
+  const resetStorage = async ({ keys }: { keys?: string[] | null }) => {
+    try {
+      setLoading(true)
+      if (Array.isArray(keys) && 0 < keys.length) {
+        await AsyncStorage.multiRemove(keys);
+        console.log('Selected keys removed:', keys);
+      } else {
+        await AsyncStorage.clear();
+        console.log('All storage cleared.');
+      }
+      setModalVisible(false);
+    } catch (error) {
+      console.error('Error clearing storage:', error);
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <SafeAreaView className='flex-1' edges={['right', 'left', 'bottom']}>
       {fontsLoaded ? (
         <View className="flex-1 relative ">
           {/* Colored background for top 1/4 of screen */}
           <View className="absolute top-0 left-0 right-0 h-[9%] bg-primary" />
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View className="flex-1 items-center justify-center bg-black/50">
+              <View className="bg-white p-6 rounded-2xl w-[70%]">
+                <Text className="text-xl font-semibold">Reset Profile</Text>
+                <Text className="text-gray-500 mt-2">
+                  Are you sure you want to reset your profile?
+                </Text>
+                <View className="flex-row justify-end mt-4">
+                  <Pressable 
+                    onPress={() => setModalVisible(false)}
+                    className="px-4 py-2 text-primary"
+                    disabled={loading}
+                  >
+                    <Text className={`text-primary ${loading ? 'opacity-50' : ''}`}>Cancel</Text>
+                  </Pressable>
+                  <Pressable 
+                    onPress={() => resetStorage({'keys': [
+                      'personal_form', 
+                      'education_entries',
+                      'experience_entries',
+                      'skill_entries',
+                      'objective_form',
+                      'reference_entries'
+                    ]})}
+                    className="px-4 py-2 ml-2"
+                    disabled={loading}
+                  >
+                    <Text className={`text-primary ${loading ? 'opacity-50' : ''}`}>Reset</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
           
           <View className="flex-1 p-1 z-10 ">
             <FlatGrid
@@ -118,7 +189,7 @@ export default function CreateScreen() {
             />
           </View>
 
-          <View className='ps-6 px-4'>
+          <View className={`ps-6 px-4 ${modalVisible ? 'pb-4' : ''}`}>
             <ButtonComponent
               title="Next"
               handlePress={onNext}

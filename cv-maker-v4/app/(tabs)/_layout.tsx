@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable, PressableProps } from 'react-native'
+import { Modal, View, Text, StyleSheet, Image, Pressable, PressableProps } from 'react-native'
 import React from 'react'
 import { Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
@@ -14,11 +14,19 @@ const TabIcon = ({icon, color, name, focused}: any) => {
       <Image
         source={icon}
         resizeMode='contain'
-        tintColor={focused ? COLORS.SECONDARY : color}
+        tintColor={focused ? COLORS.WHITE : COLORS.WHITE}
         className='w-6 h-6'
       />
       {/* Ternary operator: If (focused) return 'font-psemibold' else 'font-pregular' */}
-      <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: focused ? COLORS.SECONDARY : color}}>
+      <Text 
+        className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} 
+        style={
+          {
+            color: focused ? COLORS.WHITE : COLORS.WHITE,
+            display: focused ? 'flex' : 'none'
+          }
+        }
+      >
         {name}
       </Text>
     </View>
@@ -40,36 +48,24 @@ const MainTabIcon = ({icon, color, name, focused}: any) => {
 
 const CustomTabBarButton = ({ children, onPress }: PressableProps & { children: React.ReactNode }) => {
   return <Pressable
-    className='top-[-35] justify-center items-center'
+    className='top-[-50] justify-center items-center'
     onPress={onPress}
   >
-    <View
-      className='w-[65] h-[65] rounded-[35] bg-primary'
-    >
-      {children}
+    <View className="w-[80] h-[80] justify-end items-center relative">
+      <View className="absolute bottom-[-9] w-[80] h-[40] rounded-b-[40] bg-gray-50 z-[-1]" />
+      
+      {/* Main Button */}
+      <View className="w-[65] h-[65] rounded-[35] bg-primary items-center justify-center">
+        {children}
+      </View>
     </View>
   </Pressable>
 }
 
 const TabsLayout = () => {
   const insets = useSafeAreaInsets();
-  const bottomPadding = Platform.OS === 'android' ? insets.bottom : 25; // Add extra padding for the tab bar height and spacing
-
-  const resetStorage = async ({ keys }: { keys?: string[] | null }) => {
-    try {
-      if (Array.isArray(keys) && 0 < keys.length) {
-        // Remove only specified keys
-        await AsyncStorage.multiRemove(keys);
-        console.log('Selected keys removed:', keys);
-      } else {
-        // Clear all storage
-        await AsyncStorage.clear();
-        console.log('All storage cleared.');
-      }
-    } catch (error) {
-      console.error('Error clearing storage:', error);
-    }
-  }
+  // Add extra padding for the tab bar height and spacing
+  const bottomPadding = Platform.OS === 'android' ? insets.bottom : 25; 
 
   return (
     <>
@@ -79,15 +75,18 @@ const TabsLayout = () => {
         tabBarStyle: {
           position: 'absolute',
           bottom: bottomPadding,
-          marginHorizontal: 20,
+          // marginHorizontal: 20,
           paddingBottom: 0,
           // elevation: 0,
-          backgroundColor: '#ffffff',
+          backgroundColor: COLORS.PRIMARY,
           borderTopColor: 'transparent',
-          borderRadius: 15,
-          height: 75,
-          ...styles.shadow,
-        }
+          // borderRadius: 15,
+          // height: 75,
+          height: 60,
+          shadowColor: 'transparent',
+          // ...styles.shadow,
+        },
+        animation: 'shift',
       }}
     >
       <Tabs.Screen 
@@ -141,14 +140,6 @@ const TabsLayout = () => {
             return <CustomTabBarButton {...props} />
           },
           tabBarLabel: () => null,
-          headerRight: ({  }) => (
-            <Pressable
-              onPress={() => resetStorage({})}
-              className="pr-6"
-            >
-              <FontAwesome name="rotate-right" size={24} color="white" />
-            </Pressable>
-          ),
           headerLeft: ({  }) => (
             <Pressable 
               onPress={() => {
@@ -156,7 +147,7 @@ const TabsLayout = () => {
               }} 
               className="pl-6 w-[50]">
               <Image
-                source={icons.back} // Your custom icon here
+                source={icons.back}
                 className="w-5 h-5 tint-white"
                 tintColor="#FFFFFF"
               />
@@ -169,7 +160,7 @@ const TabsLayout = () => {
       <Tabs.Screen 
         name="pdfs" 
         options={{ 
-          title: 'PDFs', 
+          title: 'Generated PDFs', 
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               icon={icons.file}
