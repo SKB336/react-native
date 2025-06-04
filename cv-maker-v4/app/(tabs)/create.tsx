@@ -1,8 +1,8 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, ActivityIndicator, Pressable, Modal } from 'react-native';
+import { useEffect, useState, useLayoutEffect, useRef, useCallback } from 'react';
+import { View, Text, ActivityIndicator, Pressable, Modal, Animated } from 'react-native';
 
 import * as Font from 'expo-font';
-import { Route, router, useNavigation } from 'expo-router';
+import { Route, router, useFocusEffect, useNavigation } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { FlatGrid } from 'react-native-super-grid';
@@ -37,12 +37,35 @@ const cardDataExtra: {
 ]
 
 export default function CreateScreen() {
+  
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset fade to 0
+    fadeAnim.setValue(0);
+
+    // Start animation
+    const animation = Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    });
+
+    animation.start();
+
+    // Optional cleanup
+    return () => {
+      animation.stop(); // stop in case user quickly switches away
+    };
+    }, [])
+  )
+  
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: ({  }) => (
@@ -189,12 +212,15 @@ export default function CreateScreen() {
             />
           </View>
 
-          <View className={`ps-6 px-4 ${modalVisible ? 'pb-4' : ''}`}>
+          <Animated.View 
+            className={`ps-6 px-4 ${modalVisible ? 'pb-4' : ''}`}
+            style={{ opacity: fadeAnim }}
+          >
             <ButtonComponent
               title="Next"
               handlePress={onNext}
             />
-          </View>
+          </Animated.View>
         </View>
       ) : (
         <View className="flex-1 justify-center items-center">

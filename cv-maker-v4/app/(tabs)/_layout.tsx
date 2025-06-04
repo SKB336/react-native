@@ -1,10 +1,8 @@
-import { Modal, View, Text, StyleSheet, Image, Pressable, PressableProps } from 'react-native'
+import { View, Text, Image, Pressable, PressableProps } from 'react-native'
 import React from 'react'
 import { Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
 import COLORS from '../../constants/colors'
-import { FontAwesome } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
 
@@ -20,12 +18,10 @@ const TabIcon = ({icon, color, name, focused}: any) => {
       {/* Ternary operator: If (focused) return 'font-psemibold' else 'font-pregular' */}
       <Text 
         className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} 
-        style={
-          {
-            color: focused ? COLORS.WHITE : COLORS.WHITE,
-            display: focused ? 'flex' : 'none'
-          }
-        }
+        style={{
+          color: focused ? COLORS.WHITE : COLORS.WHITE,
+          display: focused ? 'flex' : 'none'
+        }}
       >
         {name}
       </Text>
@@ -52,7 +48,7 @@ const CustomTabBarButton = ({ children, onPress }: PressableProps & { children: 
     onPress={onPress}
   >
     <View className="w-[80] h-[80] justify-end items-center relative">
-      <View className="absolute bottom-[-9] w-[80] h-[40] rounded-b-[40] bg-gray-50 z-[-1]" />
+      <View className="absolute bottom-[-6] w-[75] h-[40] rounded-b-[40] bg-gray-50 z-[-1]" />
       
       {/* Main Button */}
       <View className="w-[65] h-[65] rounded-[35] bg-primary items-center justify-center">
@@ -75,16 +71,11 @@ const TabsLayout = () => {
         tabBarStyle: {
           position: 'absolute',
           bottom: bottomPadding,
-          // marginHorizontal: 20,
           paddingBottom: 0,
-          // elevation: 0,
           backgroundColor: COLORS.PRIMARY,
           borderTopColor: 'transparent',
-          // borderRadius: 15,
-          // height: 75,
           height: 60,
           shadowColor: 'transparent',
-          // ...styles.shadow,
         },
         animation: 'shift',
       }}
@@ -184,18 +175,5 @@ const TabsLayout = () => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: '#7F5DF0',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-  }
-})
 
 export default TabsLayout

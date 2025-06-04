@@ -16,7 +16,7 @@ export interface FormField {
         enabled: boolean;
         apiKey?: string;
         apiEndpoint?: string;
-        prompt: string;
+        prompt: string;                                                   
         contextKey?: string[];
     };
 }
