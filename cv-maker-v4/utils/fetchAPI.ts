@@ -36,6 +36,7 @@ export const fetchAISuggestion = async (prompt: string): Promise<string> => {
     return data.choices[0]?.message?.content?.trim() || 'No suggestion available';
   } catch (error) {
     console.error('AI Suggestion error:', error);
+    console.log(API_KEY, API_MODEL, API_ENDPOINT)
     throw error;
   }
 };

@@ -47,22 +47,19 @@ export default function CreateScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      // Reset fade to 0
-    fadeAnim.setValue(0);
+      fadeAnim.setValue(0);
 
-    // Start animation
-    const animation = Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    });
+      const animation = Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      });
 
-    animation.start();
+      animation.start();
 
-    // Optional cleanup
-    return () => {
-      animation.stop(); // stop in case user quickly switches away
-    };
+      return () => {
+        animation.stop();
+      };
     }, [])
   )
   

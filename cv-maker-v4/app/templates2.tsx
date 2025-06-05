@@ -24,32 +24,22 @@ const Template2 = () => {
   useEffect(() => {
     // Only run the animation if a template is selected
     if (selectedTemplate) {
-      // --- FIX: Reset values instantly before animating ---
+      // --- Reset values instantly before animating ---
       opacity.setValue(0);
       scale.setValue(0.8);
 
-      // Start the "in" animation
       Animated.parallel([
         Animated.timing(opacity, {
-          toValue: 1, // Animate TO visible
+          toValue: 1,
           duration: 200,
           useNativeDriver: true,
         }),
         Animated.spring(scale, {
-          toValue: 1, // Animate TO full size
-          // Adjust spring properties if needed:
-          // friction: 7,
-          // tension: 40,
+          toValue: 1,
           useNativeDriver: true,
         }),
       ]).start();
     }
-    // Optional: If you wanted an "out" animation when deselecting all,
-    // you would add an `else` block here to animate opacity to 0 and scale to 0.8.
-    // However, the current logic doesn't seem to support deselecting back to null.
-
-    // Include opacity and scale in deps array (good practice, 
-    // though useRef values don't trigger effect directly)
   }, [selectedTemplate, opacity, scale]); 
 
   let generatePDF = async () => {
@@ -67,7 +57,7 @@ const Template2 = () => {
     });
 
     let cleanData : any = flagEmptyKeys(data);
-    const html = template?.renderHtml(cleanData);
+    const html = template?.renderHtml(cleanData) || '';
 
     // Printing
     const personalForm = await AsyncStorage.getItem('personal_form')

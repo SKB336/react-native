@@ -1,4 +1,3 @@
-import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 import RepeatingFormComponent from '../../components/RepeatingFormComponent';

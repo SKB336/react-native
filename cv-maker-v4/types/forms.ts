@@ -20,3 +20,40 @@ export interface FormField {
         contextKey?: string[];
     };
 }
+
+export interface TemplateDataType {
+    personal_form?: {
+      fullName: string;
+      currentPosition?: string;
+      email: string;
+      phone: string;
+      linkedIn?: string;
+      website?: string;
+      photo?: any; // TYPE: Maybe a Number pointing to the image
+    };
+    objective_form?: {
+      objective: string;
+    };
+    experience_entries?: Array<{
+      position: string;
+      company: string;
+      dateFrom: string;
+      dateTo: string;
+      details?: string;
+    }>;
+    education_entries?: Array<{
+      course: string;
+      institution: string;
+      year: string;
+    }>;
+    skill_entries?: Array<{
+      skill: string;
+    }>;
+    reference_entries?: Array<{
+      refName: string;
+      company: string;
+      position: string;
+      phone: string;
+      email: string;
+    }>;
+}

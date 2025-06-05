@@ -1,6 +1,5 @@
-import React from 'react';
-import { View, Text, Dimensions, Image, Pressable } from 'react-native';
-import { Svg, Circle, Rect, Polygon } from 'react-native-svg';
+import { View, Text, Dimensions, Image } from 'react-native';
+import { Svg, Circle } from 'react-native-svg';
 import ButtonComponent from '../components/ButtonComponent';
 
 import { images } from '../constants';

@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import FormComponent from '../../components/FormComponent';
 import { FormField  } from '../../types/forms';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PersonalForm = () => {
   const handleSubmit = (values: any) => {

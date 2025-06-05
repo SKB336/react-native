@@ -11,12 +11,14 @@ import BasicTemplateThumbnail from "../assets/images/templates/BasicTemplate.png
 import ModernTemplateThumbnail from "../assets/images/templates/ModernTemplate.jpg";
 import FuncTemplateThumbnail from "../assets/images/templates/FuncTemplate.jpg";
 
+import { TemplateDataType } from "../types/forms";
+
 interface Template {
   name: string;
-  html?: any; // TODO: better type it
-  renderHtml?: any;
-  thumbnail: any;
-  injections?: any;
+  html?: any; // TODO: Need to discard this
+  renderHtml: (data: TemplateDataType) => string;
+  thumbnail: any; // TYPE: Maybe a Number pointing to the image
+  injections?: any; // TODO: Need to discard this
 }
 
 export const templates = [
