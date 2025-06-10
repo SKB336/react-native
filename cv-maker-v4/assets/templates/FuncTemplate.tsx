@@ -1,6 +1,6 @@
 import { TemplateDataType } from "~/types/forms";
 
-export function FuncTemplate(data: TemplateDataType) {
+export default function FuncTemplate(data: TemplateDataType) {
     const {
       personal_form,
       objective_form,

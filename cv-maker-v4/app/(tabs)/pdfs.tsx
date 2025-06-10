@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
 import { View, Text, FlatList, Pressable } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { shareAsync } from 'expo-sharing';
 import { useFocusEffect } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PDFs() {
   const [files, setFiles] = useState<string[]>([]);
@@ -36,21 +37,24 @@ export default function PDFs() {
   };
 
   return (
-    <View className="p-4">
+    <SafeAreaView className="p-4" edges={['bottom']}>
+    <View className="pb-[60px]">
       <FlatList
         data={files}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Pressable
-            className='bg-white rounded-lg p-4 mb-4 flex-row justify-between items-center active:opacity-70'
+            className='bg-white border border-black rounded-lg p-4 mb-4 flex-row justify-between items-center active:opacity-70'
             onPress={() => openFile(item)}
           >
-            <Text className="text-lg font-semibold">{item}</Text>
-            <FontAwesome name="file-pdf-o" size={24} color="black" />
+            <Text className="flex-1 text-lg font-semibold">{item}</Text>
+            <Feather name="download" size={24} color="black" />
           </Pressable>
         )}
         ListEmptyComponent={<Text>No PDFs found</Text>}
+        showsVerticalScrollIndicator={false}
       />
     </View>
+    </SafeAreaView>
   );
 }
