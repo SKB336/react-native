@@ -10,6 +10,8 @@ export default function ModernTemplate(data: TemplateDataType) {
       reference_entries
     } = data;
 
+    console.log(personal_form?.photo)
+
     return /*html*/`
     <!DOCTYPE html>
     <html>
@@ -150,7 +152,7 @@ export default function ModernTemplate(data: TemplateDataType) {
         <div class="column text-center bg-1">
             ${personal_form ? `
             <div class="item">
-                ${personal_form.photo ? `<img src="${personal_form.photo}" alt="Profile Photo" class="profile-picture">` : ''}
+                ${personal_form.photo ? `<img src="data:image/jpeg;base64,${personal_form.photo.base64}" alt="Profile Photo" class="profile-picture">` : ''}
                 <h2 id="name">${personal_form.fullName}</h2>
                 ${personal_form.currentPosition ? `<h3 id="current-position">${personal_form.currentPosition}</h3>` : ''}
             </div>` : ''}

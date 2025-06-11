@@ -193,9 +193,10 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 allowsEditing: true,
                 aspect: [1, 1],
                 quality: 1,
+                base64: true,
               });
               if (!result.canceled) {
-                handleChange(name, result.assets[0].uri);
+                handleChange(name, result.assets[0]);
               }
             }}
             className="w-full mb-4"
@@ -203,7 +204,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
             <View className="w-full p-4 border border-gray-300 rounded-md bg-white items-center justify-center">
               {formValues[name] ? (
                 <Image
-                  source={{ uri: formValues[name] }}
+                  source={{ uri: formValues[name].uri }}
                   className="w-full aspect-square rounded-md"
                   resizeMode="cover"
                 />

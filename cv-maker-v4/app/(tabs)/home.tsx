@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Text, Alert, BackHandler } from 'react-native';
 import { v4 as uuidv4 } from 'uuid';
+import { useFocusEffect } from 'expo-router';
 
 export default function HomeScreen() {
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
     const onBackPress = () => {
       Alert.alert(
         'Exit App',
@@ -32,7 +34,8 @@ export default function HomeScreen() {
     );
   
     return () => backHandler.remove();
-  }, []);
+    }, [])
+  );
 
   const preExit = async () => {
     try {
