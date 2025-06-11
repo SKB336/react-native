@@ -13,6 +13,7 @@ import ButtonComponent from '~/components/ButtonComponent';
 import COLORS from '~/constants/colors';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { supabase } from '~/lib/supabase';
 
 
 const cardData: {
@@ -76,6 +77,7 @@ export default function CreateScreen() {
     });
   }, [navigation]);
 
+
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -84,7 +86,15 @@ export default function CreateScreen() {
       setFontsLoaded(true);
     }
 
+    async function loadProfileSystem() {
+      let { data: profile_system, error } = await supabase
+      .from('profile_system')
+      .select('*');
+
+      console.log("profile_system: ", profile_system);
+    }
     loadFonts();
+    loadProfileSystem();
   }, []);
 
   const onNext = async () => {

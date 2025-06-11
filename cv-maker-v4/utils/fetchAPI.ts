@@ -1,10 +1,37 @@
-import { API_KEY, API_MODEL, API_ENDPOINT } from "~/constants/api";
+// import { API_KEY, API_MODEL, API_ENDPOINT } from "~/constants/api";
+
+import { supabase } from "~/lib/supabase";
+
+const getSystemParams = async () => {
+  const { data, error } = await supabase
+    .from('profile_system')
+    .select('key, value')
+    .in('key', ['API_KEY', 'API_ENDPOINT', 'API_MODEL']);
+
+  if (error) {
+    console.error('Error fetching system parameters:', error);
+    return null;
+  }
+
+  // Convert the array into an object like: { API_KEY: '...', API_ENDPOINT: '...', API_MODEL: '...' }
+  const params = Object.fromEntries(data.map(item => [item.key, item.value]));
+
+  return {
+    API_KEY: params.API_KEY,
+    API_ENDPOINT: params.API_ENDPOINT,
+    API_MODEL: params.API_MODEL,
+  };
+};
 
 
 export const fetchAISuggestion = async (prompt: string): Promise<string> => {
-  if (!API_KEY) {
+  const params = await getSystemParams();
+
+  if (!params || !params.API_KEY) {
     throw new Error('AI API key is required for suggestions');
   }
+
+  const { API_KEY, API_ENDPOINT, API_MODEL } = params;
 
   try {
     const contextPrompt = prompt;
@@ -33,6 +60,7 @@ export const fetchAISuggestion = async (prompt: string): Promise<string> => {
     }
 
     const data = await response.json();
+    console.log("data: ", data)
     return data.choices[0]?.message?.content?.trim() || 'No suggestion available';
   } catch (error) {
     console.error('AI Suggestion error:', error);
