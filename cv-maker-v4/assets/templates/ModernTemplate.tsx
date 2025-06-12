@@ -1,6 +1,7 @@
 import { TemplateDataType } from "~/types/forms";
+import { EncodingType, readAsStringAsync } from "expo-file-system";
 
-export default function ModernTemplate(data: TemplateDataType) {
+export default async function ModernTemplate(data: TemplateDataType) {
     const {
       personal_form,
       objective_form,
@@ -10,7 +11,12 @@ export default function ModernTemplate(data: TemplateDataType) {
       reference_entries
     } = data;
 
-    console.log(personal_form?.photo)
+    let photo = '';
+    if (personal_form?.photo) {
+        photo = await readAsStringAsync(personal_form?.photo, {
+            encoding: EncodingType.Base64,
+        });
+    }
 
     return /*html*/`
     <!DOCTYPE html>
@@ -152,7 +158,7 @@ export default function ModernTemplate(data: TemplateDataType) {
         <div class="column text-center bg-1">
             ${personal_form ? `
             <div class="item">
-                ${personal_form.photo ? `<img src="data:image/jpeg;base64,${personal_form.photo.base64}" alt="Profile Photo" class="profile-picture">` : ''}
+                ${photo ? `<img src="data:image/jpeg;base64,${photo}" alt="Profile Photo" class="profile-picture">` : ''}
                 <h2 id="name">${personal_form.fullName}</h2>
                 ${personal_form.currentPosition ? `<h3 id="current-position">${personal_form.currentPosition}</h3>` : ''}
             </div>` : ''}

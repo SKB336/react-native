@@ -60,7 +60,6 @@ export const fetchAISuggestion = async (prompt: string): Promise<string> => {
     }
 
     const data = await response.json();
-    console.log("data: ", data)
     return data.choices[0]?.message?.content?.trim() || 'No suggestion available';
   } catch (error) {
     console.error('AI Suggestion error:', error);

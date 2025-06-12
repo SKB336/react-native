@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
-import { View, Text, FlatList, Pressable, Alert, ToastAndroid } from 'react-native';
+import { View, Text, FlatList, Pressable, Alert, ToastAndroid, Platform } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { shareAsync } from 'expo-sharing';
 import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,7 +21,6 @@ export default function PDFs() {
         }
 
         const fileList = await FileSystem.readDirectoryAsync(folderUri);
-        console.log(fileList);
         setFiles(fileList);
       };
 
@@ -41,13 +40,12 @@ export default function PDFs() {
     setItemToDelete(fileName);
     Alert.alert(
       'Delete File',
-      'Are you sure you want to delete this file?',
+      `Are you sure you want to delete ${fileName}?`,
       [
         {
           text: 'Cancel',
           onPress: () => {
             setItemToDelete(null);
-            console.log('Cancel Pressed');
           },
           style: 'cancel',
         },
@@ -56,7 +54,9 @@ export default function PDFs() {
           onPress: () => {
             deleteFile(fileName);
             setItemToDelete(null);
-            ToastAndroid.show(fileName + ' has been deleted', ToastAndroid.SHORT);
+            if (Platform.OS === 'android') {
+              ToastAndroid.show(fileName + ' has been deleted', ToastAndroid.SHORT);
+            }
           },
         },
       ],
@@ -67,10 +67,12 @@ export default function PDFs() {
   const deleteFile = async (fileName: string) => {
     const fileUri = FileSystem.documentDirectory + 'CVs/' + fileName;
     const fileInfo = await FileSystem.getInfoAsync(fileUri);
+
     if (fileInfo.exists) {
       await FileSystem.deleteAsync(fileUri);
       const folderUri = FileSystem.documentDirectory + 'CVs/';
       const folderInfo = await FileSystem.getInfoAsync(folderUri);
+      
       if (folderInfo.exists) {
         const fileList = await FileSystem.readDirectoryAsync(folderUri);
         setFiles(fileList);
@@ -86,8 +88,11 @@ export default function PDFs() {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Pressable
-            className={`border rounded-lg p-4 mb-4 flex-row justify-between items-center active:opacity-70 ${
-              itemToDelete === item ? 'bg-red-200 border-red-500' : 'bg-white border-black'
+            // className={`border rounded-lg p-4 mb-4 flex-row justify-between items-center active:opacity-70 ${
+            //   itemToDelete === item ? 'bg-red-200 border-red-500' : 'bg-white border-black'
+            // }`}
+            className={`rounded-lg p-4 mb-4 shadow-md flex-row justify-between items-center active:opacity-70 ${
+              itemToDelete === item ? 'border bg-red-200 border-red-500' : 'bg-white'
             }`}
             onPress={() => itemToDelete === item ? null : openFile(item)}
             onLongPress={() => deleteMode(item)}
@@ -96,7 +101,12 @@ export default function PDFs() {
             <Feather name={itemToDelete === item ? "trash-2" : "download"} size={24} color={itemToDelete === item ? "red" : "black"} />
           </Pressable>
         )}
-        ListEmptyComponent={<Text>No PDFs found</Text>}
+        ListEmptyComponent={
+          <View className="h-[70vh] justify-center items-center">
+            <MaterialCommunityIcons name="note-off-outline" size={64} color="gray" />
+            <Text className="text-gray-500 mt-4">No PDFs found</Text>
+          </View>
+        }
         showsVerticalScrollIndicator={false}
       />
     </View>

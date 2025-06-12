@@ -57,7 +57,7 @@ const Template2 = () => {
     });
 
     let cleanData : any = flagEmptyKeys(data);
-    const html = template?.renderHtml(cleanData) || '';
+    const html = await template?.renderHtml(cleanData) || '';
 
     // Printing
     const personalForm = await AsyncStorage.getItem('personal_form')

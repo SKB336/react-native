@@ -161,7 +161,7 @@ export default function CreateScreen() {
                       'experience_entries',
                       'skill_entries',
                       'objective_form',
-                      'reference_entries'
+                      'reference_entries',
                     ]})}
                     className="px-4 py-2 ml-2"
                     disabled={loading}

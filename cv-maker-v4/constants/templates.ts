@@ -10,7 +10,7 @@ import { TemplateDataType } from "../types/forms";
 
 interface Template {
   name: string;
-  renderHtml: (data: TemplateDataType) => string;
+  renderHtml: (data: TemplateDataType) => Promise<string>;
   thumbnail: any; // TYPE: Maybe a Number pointing to the image
 }
 

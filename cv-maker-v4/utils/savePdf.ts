@@ -37,7 +37,7 @@ export const savePdfToFolder = async ({
   let i = 1;
   let destFileName = extFileName;
   while (await FileSystem.getInfoAsync(folderUri + destFileName).then(info => info.exists)) {
-    destFileName = fileName + '_' + i + '.pdf';
+    destFileName = fileName + '(' + i + ')' + '.pdf';
     i++;
   }
 
