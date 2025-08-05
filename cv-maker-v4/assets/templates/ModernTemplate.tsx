@@ -204,7 +204,7 @@ export default async function ModernTemplate(data: TemplateDataType) {
                         <div>${entry.position}</div>
                     </div>
                     </div>
-                    ${entry.details ? `<div class="mt-20">${entry.details}</div>` : ''}
+                    ${entry.details ? `<div class="mt-20">${entry.details.replace(/\n/g, '<br>')}</div>` : ''}
                 </div>
                 `).join('')}
             </div>` : ''}
