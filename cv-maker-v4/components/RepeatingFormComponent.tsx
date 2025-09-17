@@ -14,6 +14,7 @@ import COLORS from '~/constants/colors';
 import ButtonComponent from './ButtonComponent';
 import { FormField } from '~/types/forms';
 import { fetchAISuggestion } from '~/utils/fetchAPI';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 interface RepeatingFormComponentProps {
@@ -236,11 +237,13 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
   }
 
   return (
-    // <KeyboardAvoidingView
-    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    //   className="flex-1"
-    // >
-      <ScrollView className='' keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding:16 }}>
+    <KeyboardAwareScrollView
+          // style={{ flex: 1, backgroundColor: '#F9FAFB' }}
+          contentContainerStyle={{ flexGrow: 1, paddingVertical: 24, paddingHorizontal: 16 }}
+          keyboardShouldPersistTaps="handled"
+          extraScrollHeight={70} // Little extra padding at the bottom
+          enableOnAndroid={true}
+        >
         <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
           {formEntries.map((_, index) => (
             <View key={index} className='mb-6 rounded-md overflow-hidden'>
@@ -281,8 +284,7 @@ const RepeatingFormComponent: React.FC<RepeatingFormComponentProps> = ({
             <ButtonComponent title={submitLabel} handlePress={handleSubmit} />
           </View>
         </SafeAreaView>
-      </ScrollView>
-    // </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
   );
 };
 

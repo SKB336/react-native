@@ -109,10 +109,21 @@ export default function HomeScreen() {
       <FlatList
         data={cache}
         renderItem={({ item }) => {
-          const parsedItem = JSON.parse(item[2][1]);
+          let parsedItem: any = {};
+          try {
+            const raw = item[2]?.[1];
+            if (raw) {
+              parsedItem = JSON.parse(raw);
+            }
+          } catch (error) {
+            console.warn(error);
+          }
+          // const parsedItem = JSON.parse(item[2][1]);
           return (
             <View className="m-4 p-4 shadow-md rounded-xl bg-gray-50">
-              <Text className="text-lg font-semibold">{parsedItem.fullName}</Text>
+              <Text className="text-lg font-semibold">
+                {parsedItem?.fullName ?? 'Unnamed'}
+              </Text>
               <View className="flex-row pt-4 justify-end gap-2">
                 <Pressable className="flex-1 items-center justify-center p-2 bg-gray-200 rounded-xl">
                   <Feather name="eye" size={24} color="black" />  

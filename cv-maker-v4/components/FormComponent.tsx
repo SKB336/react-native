@@ -15,6 +15,8 @@ import ButtonComponent from './ButtonComponent';
 import { API_KEY } from '~/constants/api';
 import { fetchAISuggestion } from '~/utils/fetchAPI';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 interface FormComponentProps {
   title?: string;
@@ -250,35 +252,36 @@ const FormComponent: React.FC<FormComponentProps> = ({
         );
     }
   };
-
+  
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1"
+    <KeyboardAwareScrollView
+      style={{ flex: 1, backgroundColor: '#F9FAFB' }}
+      contentContainerStyle={{ flexGrow: 1, paddingVertical: 24, paddingHorizontal: 16 }}
+      keyboardShouldPersistTaps="handled"
+      extraScrollHeight={50} // Little extra padding at the bottom
+      enableOnAndroid={true}
     >
-      <ScrollView className="flex-1 bg-gray-50">
-        <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']} >
-          <View className='py-6 px-4'>
-            {fields.map((field) => (
-              <View key={field.name} className="mb-4">
-                <Text className="mb-2 text-sm font-medium text-gray-700">
-                  {field.label} {field.required && <Text className="text-red-500">*</Text>}
-                </Text>
-                {renderField(field)}
-                {errors[field.name] && (
-                  <Text className="mt-1 text-sm text-red-500">{errors[field.name]}</Text>
-                )}
-              </View>
-            ))}
+      <SafeAreaView className="flex-1" edges={['right', 'left', 'bottom']}>
+          {/* The wrapping <View> from the original code is no longer needed 
+              as padding is now handled by contentContainerStyle */}
+          {fields.map((field) => (
+            <View key={field.name} className="mb-4">
+              <Text className="mb-2 text-sm font-medium text-gray-700">
+                {field.label} {field.required && <Text className="text-red-500">*</Text>}
+              </Text>
+              {renderField(field)}
+              {errors[field.name] && (
+                <Text className="mt-1 text-sm text-red-500">{errors[field.name]}</Text>
+              )}
+            </View>
+          ))}
 
-            <ButtonComponent 
-                title={submitLabel} 
-                handlePress={handleSubmit}
-            />
-          </View>
-        </SafeAreaView>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <ButtonComponent 
+              title={submitLabel} 
+              handlePress={handleSubmit}
+          />
+      </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 };
 
