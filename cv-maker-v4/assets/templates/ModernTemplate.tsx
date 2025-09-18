@@ -1,5 +1,6 @@
 import { TemplateDataType } from "~/types/forms";
-import { EncodingType, readAsStringAsync } from "expo-file-system";
+// import { EncodingType, readAsStringAsync } from "expo-file-system";
+import { File } from "expo-file-system";
 
 export default async function ModernTemplate(data: TemplateDataType) {
     const {
@@ -12,10 +13,14 @@ export default async function ModernTemplate(data: TemplateDataType) {
     } = data;
 
     let photo = '';
+    console.log("personal_form?.photo", personal_form?.photo);
     if (personal_form?.photo) {
-        photo = await readAsStringAsync(personal_form?.photo, {
-            encoding: EncodingType.Base64,
-        });
+        try {
+            const file = new File(personal_form?.photo, "");
+            photo = await file.base64();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return /*html*/`
@@ -34,99 +39,99 @@ export default async function ModernTemplate(data: TemplateDataType) {
         }
 
         .grid-container {
-        display: grid;
-        grid-template-columns: 2fr 5fr; /* 2 equal-width columns */
-        gap: 20px; /* Space between columns */
-        font-family: 'Inter', sans-serif;
-        min-height: 100vh;
+            display: grid;
+            grid-template-columns: 2fr 5fr; /* 2 equal-width columns */
+            gap: 20px; /* Space between columns */
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
         }
 
         .column {
-        display: flex;
-        flex-direction: column; /* Column direction inside each column */
-        font-size: 14px
+            display: flex;
+            flex-direction: column; /* Column direction inside each column */
+            font-size: 14px
         }
 
         .item {
-        padding: 10px;
-        margin: 5px;
+            padding: 10px;
+            margin: 5px;
         }
 
         .text-center {
-        text-align: center;
+            text-align: center;
         }
 
         .text-left {
-        text-align: left;
+            text-align: left;
         }
 
         .bg-1 {
-        background-color: #82AFA7;
-        min-height: 100%;
+            background-color: #82AFA7;
+            min-height: 100%;
         }
 
         #name {
-        margin-bottom: 0.5em;
-        font-weight: bold
+            margin-bottom: 0.5em;
+            font-weight: bold;
         }
 
         #current-position {
-        margin-top: 10px;
+            margin-top: 10px;
         }
 
         .left-header {
-        text-decoration: underline;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 4px;   
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;   
         }
 
         #contact div {
-        margin-bottom: 0.5em;
+            margin-bottom: 0.5em;
         }
 
         .section-header {
-        color: #82AFA7;
+            color: #82AFA7;
         }
 
         .flex {
-        display: flex;
+            display: flex;
         }
 
         .flex-1 {
-        flex: 1 1 0%;
+            flex: 1 1 0%;
         }
 
         .experience-header {
-        font-weight: bold;
+            font-weight: bold;
         }
 
         .mt-20 {
-        margin-top: 1em;
+            margin-top: 1em;
         }
 
         .mt-40 {
-        margin-top: 2em;
+            margin-top: 2em;
         }
 
         .mb-20 {
-        margin-bottom: 1em;
+            margin-bottom: 1em;
         }
 
         .mb-40 {
-        margin-bottom: 2em;
+            margin-bottom: 2em;
         }
 
         .arrow-bullets {
-        list-style: none;
-        padding-left: 0;
+            list-style: none;
+            padding-left: 0;
         }
 
         .arrow-bullets li::before {
-        content: "➤"; /* You can also use → or ► */
-        color: #82AFA7;
-        font-weight: bold;
-        display: inline-block;
-        width: 1.5em;
+            content: "➤"; /* You can also use → or ► */
+            color: #82AFA7;
+            font-weight: bold;
+            display: inline-block;
+            width: 1.5em;
         }
 
         .flex-li {

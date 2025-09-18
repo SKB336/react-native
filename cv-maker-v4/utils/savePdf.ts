@@ -1,6 +1,6 @@
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing'
-import * as FileSystem from 'expo-file-system';
+import { Directory, Paths, File } from 'expo-file-system';
 
 interface SavePdfToFolderProps {
     html: string;
@@ -24,33 +24,36 @@ export const savePdfToFolder = async ({
     base64: base64,
   });
   
-  const folderUri = FileSystem.documentDirectory + 'CVs/';
-  
-  const folderInfo = await FileSystem.getInfoAsync(folderUri);
+  const sourceFile = new File(uri);
 
-  if (!folderInfo.exists) {
-    await FileSystem.makeDirectoryAsync(folderUri, { intermediates: true });
+  const cvsDir = new Directory(Paths.document, "CVs");
+  // Check if the folder exists
+  if (!cvsDir.exists) {
+    // Create it (like makeDirectoryAsync with intermediates)
+    await cvsDir.create({ intermediates: true });
   }
-    
-  const extFileName = fileName + '.pdf';
 
+  // Pick a unique filename
   let i = 1;
-  let destFileName = extFileName;
-  while (await FileSystem.getInfoAsync(folderUri + destFileName).then(info => info.exists)) {
-    destFileName = fileName + '(' + i + ')' + '.pdf';
+  let destFileName = `${fileName}.pdf`;
+  while (true) {
+    const destFile = new File(Paths.document, `CVs/${destFileName}`);
+    const info = await destFile.info();
+
+    if (!info.exists) break;
+
+    destFileName = `${fileName}(${i}).pdf`;
     i++;
   }
 
-  const destUri = folderUri + destFileName;
+  // Copy the PDF into the CVs folder
+  const destFile = new File(Paths.document, `CVs/${destFileName}`);
+  try {
+    sourceFile.copy(destFile);
+  } catch (error) {
+    console.error("Error copying file:", error);
+  }
 
-  // Copy the file to the desired location
-  await FileSystem.copyAsync({
-    from: uri,
-    to: destUri,
-  });
-
-  console.log('PDF saved to:', destUri);
-  
-  await shareAsync(uri);
+  await shareAsync(destFile.uri);
 };
   
