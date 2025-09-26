@@ -210,7 +210,7 @@ export default function CreateScreen() {
           </View>
 
           <Animated.View 
-            className={`ps-6 px-4 ${modalVisible ? 'pb-4' : ''}`}
+            className={`pb-3 px-6 ${modalVisible ? 'pb-4' : ''}`}
             style={{ opacity: fadeAnim }}
           >
             <ButtonComponent

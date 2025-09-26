@@ -1,10 +1,12 @@
 import BasicTemplate from "../assets/templates/BasicTemplate";
 import ModernTemplate from "../assets/templates/ModernTemplate";
 import FuncTemplate from "../assets/templates/FuncTemplate";
+import GridTemplate from "../assets/templates/GridTemplate";
 
 import BasicTemplateThumbnail from "../assets/images/templates/BasicTemplate.png";
 import ModernTemplateThumbnail from "../assets/images/templates/ModernTemplate.jpg";
 import FuncTemplateThumbnail from "../assets/images/templates/FuncTemplate.jpg";
+import GridTemplateThumbnail from "../assets/images/templates/GridTemplate.jpg";
 
 import { TemplateDataType } from "../types/forms";
 
@@ -21,7 +23,7 @@ export const templates = [
         thumbnail: BasicTemplateThumbnail,
     },
     {
-        name: "Modern",
+        name: "Modern2",
         renderHtml: ModernTemplate,
         thumbnail: ModernTemplateThumbnail
     },
@@ -29,5 +31,10 @@ export const templates = [
         name: "Func",
         renderHtml: FuncTemplate,
         thumbnail: FuncTemplateThumbnail
+    },
+    {
+        name: "Grid",
+        renderHtml: GridTemplate,
+        thumbnail: GridTemplateThumbnail
     }
 ] as Template[];

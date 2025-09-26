@@ -143,6 +143,7 @@ export default function PDFs() {
         </View>
 
         <FlatList
+          overScrollMode="never"
           data={files}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (

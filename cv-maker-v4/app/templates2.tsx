@@ -115,7 +115,7 @@ const Template2 = () => {
     </View>
 
     <View 
-      className='absolute bottom-1 w-full ps-6 px-4' 
+      className='absolute bottom-3 w-full px-6' 
       style={{ marginBottom: insets.bottom }}
     >
       <ButtonComponent

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, Alert, BackHandler, FlatList, Pressable } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,8 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useFocusEffect } from 'expo-router';
 import COLORS from '~/constants/colors';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const router = useRouter();
+// const router = useRouter();
 
 export default function HomeScreen() {
   const [cache, setCache] = useState<any[]>([]);
@@ -105,7 +106,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <View>
+    <SafeAreaView className="flex-1 bg-gray-50" edges={['bottom']}>
+      <View className="flex-1 px-6 pt-4">
       <FlatList
         data={cache}
         renderItem={({ item }) => {
@@ -138,7 +140,21 @@ export default function HomeScreen() {
             </View>
           )
         }}
+        ListEmptyComponent={
+          <View className="flex-1 justify-center items-center py-20">
+            <View className="w-24 h-24 bg-gray-100 rounded-full justify-center items-center mb-6">
+              <MaterialCommunityIcons name="file-document-outline" size={40} color="#9ca3af" />
+            </View>
+            <Text className="text-xl font-semibold text-gray-700 mb-2">No Files Yet</Text>
+            <Text className="text-gray-500 text-center px-8 leading-6">
+              Your PDF files will appear here once you add them to your collection
+            </Text>
+          </View>
+        }
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}
       />
     </View>
+    </SafeAreaView>
   );
 }
