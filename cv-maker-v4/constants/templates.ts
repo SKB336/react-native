@@ -3,10 +3,10 @@ import ModernTemplate from "../assets/templates/ModernTemplate";
 import FuncTemplate from "../assets/templates/FuncTemplate";
 import GridTemplate from "../assets/templates/GridTemplate";
 
-import BasicTemplateThumbnail from "../assets/images/templates/BasicTemplate.png";
-import ModernTemplateThumbnail from "../assets/images/templates/ModernTemplate.jpg";
+import BasicTemplateThumbnail from "../assets/images/templates/BasicTemplate.jpeg";
+import ModernTemplateThumbnail from "../assets/images/templates/ModernTemplate.jpeg";
 import FuncTemplateThumbnail from "../assets/images/templates/FuncTemplate.jpg";
-import GridTemplateThumbnail from "../assets/images/templates/GridTemplate.jpg";
+import GridTemplateThumbnail from "../assets/images/templates/GridTemplate.jpeg";
 
 import { TemplateDataType } from "../types/forms";
 
@@ -23,12 +23,12 @@ export const templates = [
         thumbnail: BasicTemplateThumbnail,
     },
     {
-        name: "Modern2",
+        name: "Modern",
         renderHtml: ModernTemplate,
         thumbnail: ModernTemplateThumbnail
     },
     {
-        name: "Func",
+        name: "XYZ",
         renderHtml: FuncTemplate,
         thumbnail: FuncTemplateThumbnail
     },

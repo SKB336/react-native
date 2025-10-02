@@ -145,10 +145,10 @@ export default function HomeScreen() {
             <View className="w-24 h-24 bg-gray-100 rounded-full justify-center items-center mb-6">
               <MaterialCommunityIcons name="file-document-outline" size={40} color="#9ca3af" />
             </View>
-            <Text className="text-xl font-semibold text-gray-700 mb-2">No Files Yet</Text>
-            <Text className="text-gray-500 text-center px-8 leading-6">
-              Your PDF files will appear here once you add them to your collection
-            </Text>
+            <Text className="text-xl font-semibold text-gray-700 mb-2">No History Yet</Text>
+            {/* <Text className="text-gray-500 text-center px-8 leading-6">
+              Your history will appear here once you add them to your collection
+            </Text> */}
           </View>
         }
         showsVerticalScrollIndicator={false}
