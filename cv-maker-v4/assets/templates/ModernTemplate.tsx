@@ -209,7 +209,16 @@ export default async function ModernTemplate(data: TemplateDataType) {
                         <div>${entry.position}</div>
                     </div>
                     </div>
-                    ${entry.details ? `<div class="mt-20">${entry.details.replace(/\n/g, '<br>')}</div>` : ''}
+                    ${entry.details 
+                        ? `<ul class="experience-bullets">${
+                            entry.details
+                            .split('\n')
+                            .filter(Boolean)
+                            .map((d: string) => `<li>${d.replace(/^\s*-\s*/, '')}</li>`)
+                            .join('')
+                        }</ul>` 
+                        : ''
+                    }
                 </div>
                 `).join('')}
             </div>` : ''}
